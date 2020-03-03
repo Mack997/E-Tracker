@@ -62,7 +62,7 @@ public class RegisterEmployee extends AppCompatActivity {
                     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                         c.set(year, monthOfYear, dayOfMonth);
                         RegisterEmployee.this.eDob = dateFormat.format(c.getTime());
-                        dob.setText(getString(R.string.dob)  +  RegisterEmployee.this.eDob);
+                        dob.setText(RegisterEmployee.this.eDob);
                     }
                 }, year, month, day);
                 datePickerDialog.show();

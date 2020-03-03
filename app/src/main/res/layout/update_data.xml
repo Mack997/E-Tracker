@@ -8,6 +8,34 @@
     android:orientation="vertical"
     android:layout_margin="10dp">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:orientation="vertical">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/ECode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/enter_employee_code"
+                android:inputType="text" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@android:color/holo_green_light"
+            android:text="@string/search_employee" />
+    </LinearLayout>
+
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -18,21 +46,6 @@
             android:id="@+id/name"
             android:inputType="textCapWords"
             android:hint="@string/enter_name"/>
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/ecode"
-            android:inputType="text"
-            android:hint="@string/enter_employee_code"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -110,6 +123,6 @@
         android:id="@+id/save"
         android:layout_marginTop="16dp"
         android:background="@android:color/holo_green_light"
-        android:text="@string/save"/>
+        android:text="@string/update"/>
 
 </LinearLayout>

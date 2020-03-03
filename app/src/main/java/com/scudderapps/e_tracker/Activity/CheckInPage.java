@@ -1,6 +1,7 @@
 package com.scudderapps.e_tracker.Activity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -56,8 +57,7 @@ public class CheckInPage extends AppCompatActivity {
                 .allowMainThreadQueries()
                 .build();
 
-        String currentDate = new SimpleDateFormat("yyMMddHHmmss", Locale.getDefault()).format(new Date());
-        final String check_in = currentDate;
+        final String check_in = new SimpleDateFormat("yyMMddHHmmss", Locale.getDefault()).format(new Date());
 
         searchEmployee.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,6 +95,8 @@ public class CheckInPage extends AppCompatActivity {
                             if (empCode.size() == 0) {
                                 CheckIn.setEnabled(true);
                                 CheckOut.setEnabled(false);
+                                CheckIn.setBackgroundColor(Color.GREEN);
+                                CheckOut.setBackgroundColor(Color.GRAY);
                             } else {
                                 for (AttendanceDetails statusString : statusDetails) {
                                     String status = statusString.getStatus();
@@ -103,15 +105,19 @@ public class CheckInPage extends AppCompatActivity {
                                     if (status.equals("Checked In")) {
                                         CheckIn.setEnabled(false);
                                         CheckOut.setEnabled(true);
+                                        CheckOut.setBackgroundColor(Color.GREEN);
+                                        CheckIn.setBackgroundColor(Color.GRAY);
                                     } else {
                                         CheckIn.setEnabled(true);
                                         CheckOut.setEnabled(false);
+                                        CheckIn.setBackgroundColor(Color.GREEN);
+                                        CheckOut.setBackgroundColor(Color.GRAY);
                                     }
                                 }
                             }
                         }
                     } else {
-//                        Toast.makeText(CheckInPage.this, "Please enter the correct details", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(CheckInPage.this, "Please enter the correct details", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -121,7 +127,7 @@ public class CheckInPage extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String status = "Checked In";
-                attendanceDetails.setCode(code);
+                attendanceDetails.setCode(ECode);
                 attendanceDetails.setCreatedAt(check_in);
                 attendanceDetails.setStatus(status);
 
@@ -135,7 +141,7 @@ public class CheckInPage extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String status = "Checked Out";
-                attendanceDetails.setCode(code);
+                attendanceDetails.setCode(ECode);
                 attendanceDetails.setCreatedAt(check_in);
                 attendanceDetails.setStatus(status);
 

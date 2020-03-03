@@ -13,7 +13,7 @@ import androidx.room.Room;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button register, attendance;
+    Button register, attendance, edit;
     public static EmployeeDatabase employeeDatabase;
 
     @Override
@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
 
         register = findViewById(R.id.register);
         attendance = findViewById(R.id.attendance);
+        edit = findViewById(R.id.edit);
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -43,5 +44,14 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(attendancePage);
             }
         });
+
+        edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent editPage = new Intent(MainActivity.this, UpdateData.class);
+                startActivity(editPage);
+            }
+        });
+
     }
 }
