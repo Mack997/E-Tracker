@@ -14,14 +14,12 @@ public interface AttendanceDAO {
     @Insert
     void addAttendance(AttendanceDetails attendanceDetails);
 
-    @Query("SELECT * FROM attendance_details WHERE Code = :code " +
-            "AND createdAt = :timestamp " +
-            "AND Status = 'Checked In' " +
-            "OR Status = 'Checked Out'")
-
-    List<AttendanceDetails> statusDetail(String code, String timestamp);
-
-//    @Query("SELECT * FROM attendance_details WHERE Code = :code  AND Status = 'Checked In' OR Status = 'Checked Out'")
+//    @Query("SELECT *,FROM attendance_details WHERE Code = :code")
 //    List<AttendanceDetails> statusDetail(String code);
 
+    @Query("SELECT * FROM attendance_details WHERE Code = :code")
+    List<AttendanceDetails> empCode(String code);
+
+    @Query("SELECT * , MAX(createdAt)  FROM attendance_details WHERE Code = :code")
+    List<AttendanceDetails> x(String code);
 }

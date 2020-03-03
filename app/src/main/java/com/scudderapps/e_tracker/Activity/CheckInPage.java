@@ -56,8 +56,7 @@ public class CheckInPage extends AppCompatActivity {
                 .allowMainThreadQueries()
                 .build();
 
-        String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
-        String currentTime = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date());
+        String currentDate = new SimpleDateFormat("yyMMddHHmmss", Locale.getDefault()).format(new Date());
         final String check_in = currentDate;
 
         searchEmployee.setOnClickListener(new View.OnClickListener() {
@@ -76,7 +75,7 @@ public class CheckInPage extends AppCompatActivity {
 
                         List<EmployeeData> employeeDataList = MainActivity.employeeDatabase.employeeDAO().getEmployee(ECode, EPass);
 
-                        for (EmployeeData data : employeeDataList){
+                        for (EmployeeData data : employeeDataList) {
 
                             String name = data.getName();
                             code = data.getCode();
@@ -86,32 +85,30 @@ public class CheckInPage extends AppCompatActivity {
                             codeView.setText(code);
                             dobView.setText(dob);
 
-                            List<AttendanceDetails> statusDetails = attendanceDatabase.attendanceDAO().statusDetail(ECode, check_in);
-                            String l = String.valueOf(statusDetails.size());
+                            List<AttendanceDetails> statusDetails = attendanceDatabase.attendanceDAO().x(ECode);
+
+                            List<AttendanceDetails> empCode = attendanceDatabase.attendanceDAO().empCode(ECode);
+
+                            String l = String.valueOf(empCode.size());
                             Log.v("length", l);
 
-                            if (!statusDetails.isEmpty() && statusDetails.size() == 1) {
+                            if (empCode.size() == 0) {
+                                CheckIn.setEnabled(true);
+                                CheckOut.setEnabled(false);
+                            } else {
                                 for (AttendanceDetails statusString : statusDetails) {
                                     String status = statusString.getStatus();
-
+                                    String size = String.valueOf(statusDetails.size());
+                                    Log.v("max", size);
                                     if (status.equals("Checked In")) {
-                                        CheckOut.setEnabled(true);
                                         CheckIn.setEnabled(false);
-                                    } else if (status.equals("Checked Out")) {
-                                        CheckOut.setEnabled(false);
+                                        CheckOut.setEnabled(true);
+                                    } else {
                                         CheckIn.setEnabled(true);
+                                        CheckOut.setEnabled(false);
                                     }
                                 }
-                            } else if (statusDetails.size() == 2){
-
-                                CheckIn.setEnabled(false);
-                                CheckOut.setEnabled(false);
-
-                            } else {
-                               CheckIn.setEnabled(true);
-                               CheckOut.setEnabled(false);
                             }
-
                         }
                     } else {
 //                        Toast.makeText(CheckInPage.this, "Please enter the correct details", Toast.LENGTH_SHORT).show();
@@ -149,7 +146,7 @@ public class CheckInPage extends AppCompatActivity {
         });
     }
 
-    public void back(){
+    public void back() {
         Intent home = new Intent(CheckInPage.this, MainActivity.class);
         startActivity(home);
     }

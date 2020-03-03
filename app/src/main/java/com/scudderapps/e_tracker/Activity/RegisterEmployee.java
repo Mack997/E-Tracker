@@ -1,19 +1,21 @@
 package com.scudderapps.e_tracker.Activity;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.textfield.TextInputEditText;
 import com.scudderapps.e_tracker.DATA.EmployeeData;
 import com.scudderapps.e_tracker.R;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.List;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -23,7 +25,7 @@ public class RegisterEmployee extends AppCompatActivity {
     private int month, day, year;
     private SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMMM, yyyy");
 
-    private EditText name, code, pass, phone, email;
+    private TextInputEditText name, code, pass, phone, email;
     private TextView dob;
     private Button save;
     private String eName, ePass, eEmail, eCode, ePhone, eDob;
@@ -39,11 +41,11 @@ public class RegisterEmployee extends AppCompatActivity {
         employeeData = new EmployeeData();
 
         name = findViewById(R.id.name);
-        dob =  findViewById(R.id.dob);
-        code =  findViewById(R.id.ecode);
-        pass =  findViewById(R.id.password);
-        phone =  findViewById(R.id.phoneNumber);
-        email =  findViewById(R.id.email);
+        dob = findViewById(R.id.dob);
+        code = findViewById(R.id.ecode);
+        pass = findViewById(R.id.password);
+        phone = findViewById(R.id.phoneNumber);
+        email = findViewById(R.id.email);
         save = findViewById(R.id.save);
 
         c = Calendar.getInstance();
@@ -60,7 +62,7 @@ public class RegisterEmployee extends AppCompatActivity {
                     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                         c.set(year, monthOfYear, dayOfMonth);
                         RegisterEmployee.this.eDob = dateFormat.format(c.getTime());
-                        dob.setText(RegisterEmployee.this.eDob);
+                        dob.setText(getString(R.string.dob)  +  RegisterEmployee.this.eDob);
                     }
                 }, year, month, day);
                 datePickerDialog.show();
@@ -85,11 +87,23 @@ public class RegisterEmployee extends AppCompatActivity {
                 employeeData.setPhone(ePhone);
                 employeeData.setDate(eDob);
 
-                MainActivity.employeeDatabase.employeeDAO().addEmployee(employeeData);
+                List<EmployeeData> allEmployeeList = MainActivity.employeeDatabase.employeeDAO().Employee(eCode);
 
-                Toast.makeText(RegisterEmployee.this, "Details Saved", Toast.LENGTH_SHORT).show();
+                if (allEmployeeList.size() == 0) {
+                    MainActivity.employeeDatabase.employeeDAO().addEmployee(employeeData);
+                    Toast.makeText(RegisterEmployee.this, R.string.registration_done, Toast.LENGTH_SHORT).show();
+                    back();
+                } else {
+                    code.setError("Employee code already present");
+                    Toast.makeText(RegisterEmployee.this, R.string.registration_error, Toast.LENGTH_SHORT).show();
+                }
             }
         });
+    }
+
+    public void back() {
+        Intent home = new Intent(RegisterEmployee.this, MainActivity.class);
+        startActivity(home);
     }
 
 }

@@ -3,6 +3,7 @@ package com.scudderapps.e_tracker.DAO;
 import com.scudderapps.e_tracker.DATA.EmployeeData;
 
 import java.util.List;
+import java.util.Set;
 
 import androidx.room.Dao;
 import androidx.room.Insert;
@@ -19,5 +20,8 @@ public interface EmployeeDAO {
 
     @Query("SELECT * FROM employee_data")
     List<EmployeeData> allEmployee();
+
+    @Query("SELECT * FROM employee_data Where emp_code = :code")
+    List<EmployeeData> Employee(String code);
 
 }
