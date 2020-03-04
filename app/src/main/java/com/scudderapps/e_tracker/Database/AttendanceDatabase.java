@@ -1,7 +1,7 @@
 package com.scudderapps.e_tracker.Database;
 
-import com.scudderapps.e_tracker.DATA.AttendanceDetails;
 import com.scudderapps.e_tracker.DAO.AttendanceDAO;
+import com.scudderapps.e_tracker.DATA.AttendanceDetails;
 
 import androidx.room.Database;
 import androidx.room.RoomDatabase;

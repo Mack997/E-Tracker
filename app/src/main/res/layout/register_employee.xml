@@ -104,6 +104,14 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/fingerprint"
+        android:layout_marginTop="16dp"
+        android:enabled="false"
+        android:text="@string/add_fingerprint"/>
+
+    <Button
         android:layout_gravity="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

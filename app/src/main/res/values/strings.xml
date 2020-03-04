@@ -24,4 +24,6 @@
     <string name="save">Save</string>
     <string name="export">Export</string>
     <string name="get_attendance">Get Attendance</string>
+    <string name="add_fingerprint">Add Fingerprint</string>
+    <string name="scan_fingerprint">Scan Fingerprint</string>
 </resources>
