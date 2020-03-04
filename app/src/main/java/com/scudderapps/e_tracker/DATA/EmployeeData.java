@@ -43,7 +43,7 @@ public class EmployeeData {
     }
 
     public void setName(String name) {
-        Name = name;
+        this.Name = name;
     }
 
     public void setCode(String code) {

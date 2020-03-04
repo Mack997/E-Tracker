@@ -85,9 +85,9 @@ public class CheckInPage extends AppCompatActivity {
                             codeView.setText(code);
                             dobView.setText(dob);
 
-                            List<AttendanceDetails> statusDetails = attendanceDatabase.attendanceDAO().x(ECode);
+                            List<AttendanceDetails> statusDetails = attendanceDatabase.attendanceDAO().employeeNew(ECode);
 
-                            List<AttendanceDetails> empCode = attendanceDatabase.attendanceDAO().empCode(ECode);
+                            List<AttendanceDetails> empCode = attendanceDatabase.attendanceDAO().employeeSearched(ECode);
 
                             String l = String.valueOf(empCode.size());
                             Log.v("length", l);

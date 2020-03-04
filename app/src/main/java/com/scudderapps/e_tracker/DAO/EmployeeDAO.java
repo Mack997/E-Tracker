@@ -1,5 +1,7 @@
 package com.scudderapps.e_tracker.DAO;
 
+import android.database.Cursor;
+
 import com.scudderapps.e_tracker.DATA.EmployeeData;
 
 import java.util.List;
@@ -20,6 +22,9 @@ public interface EmployeeDAO {
 
     @Query("SELECT * FROM employee_data")
     List<EmployeeData> allEmployee();
+
+    @Query("SELECT * FROM employee_data")
+    Cursor allEmployeeData();
 
     @Query("SELECT * FROM employee_data Where emp_code = :code")
     List<EmployeeData> Employee(String code);

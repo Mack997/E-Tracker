@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activity.AttendanceData"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".Activity.AttendanceData">
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -37,9 +37,49 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:textAllCaps="false"
             android:background="@android:color/holo_green_light"
-            android:text="@string/get_attendance" />
+            android:text="@string/get_attendance"
+            android:textAllCaps="false" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:orientation="horizontal"
+        android:weightSum="2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+
+        <TextView
+            android:id="@+id/view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Status"
+            android:layout_weight="1"
+            android:layout_margin="10dp"
+            android:textStyle="bold"
+            android:fontFamily="monospace"
+            android:textColor="@android:color/black"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/View"
+            android:textAlignment="textEnd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="Time"
+            android:textStyle="bold"
+            android:fontFamily="monospace"
+            android:layout_weight="1"
+            android:layout_marginTop="10dp"
+            android:textColor="@android:color/black"
+            android:textSize="20sp" />
+
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
@@ -48,16 +88,15 @@
         android:layout_height="0dp"
         android:layout_margin="10dp"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="52dp"
         android:layout_marginEnd="10dp"
-        app:layout_constraintBottom_toTopOf="@+id/exportBtn"
+        app:layout_constraintBottom_toTopOf="@+id/deleteAllData"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout3" />
 
     <Button
-        android:id="@+id/exportBtn"
+        android:id="@+id/deleteAllData"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
@@ -65,9 +104,10 @@
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="10dp"
         android:background="@android:color/holo_green_light"
-        android:text="@string/export"
+        android:text="@string/delete_all_records"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

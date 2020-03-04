@@ -1,70 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/data_item"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginStart="10dp"
     android:layout_marginTop="10dp"
-    android:layout_marginEnd="10dp">
+    android:layout_marginEnd="10dp"
+    android:background="@color/blue"
+    android:orientation="vertical">
 
     <LinearLayout
-        android:id="@+id/linearLayout1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Status"
-            android:textColor="@android:color/black"
-            android:textSize="20sp" />
+        android:orientation="horizontal">
 
         <TextView
             android:id="@+id/statusView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@android:color/black"
+            android:fontFamily="monospace"
+            android:textSize="18sp" />
+
+        <TextView
+            android:textAlignment="textEnd"
+            android:id="@+id/dateView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="100dp"
+            android:textColor="@android:color/black"
+            android:fontFamily="monospace"
             android:textSize="18sp" />
 
     </LinearLayout>
 
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_centerInParent="true"
-        android:gravity="center">
+<!--    <View-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="1dp"-->
+<!--        android:background="@android:color/black" />-->
 
-        <LinearLayout
-            android:id="@+id/linearLayout2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:orientation="vertical">
-
-
-        <TextView
-            android:id="@+id/View"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="150dp"
-            android:text="Time"
-            android:textColor="@android:color/black"
-            android:textSize="20sp" />
-
-        <TextView
-            android:id="@+id/dateView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="150dp"
-            android:textColor="@android:color/black"
-            android:textSize="18sp" />
-        </LinearLayout>
-
-    </RelativeLayout>
-
-
-</RelativeLayout>
+</LinearLayout>
