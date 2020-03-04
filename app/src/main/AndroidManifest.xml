@@ -10,7 +10,6 @@
         android:roundIcon="@drawable/icon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <activity
             android:name=".Activity.MainActivity"
             tools:ignore="InnerclassSeparator">
@@ -26,12 +25,16 @@
             tools:ignore="InnerclassSeparator" />
         <activity
             android:name=".Activity.CheckInPage"
-            tools:ignore="InnerclassSeparator"
-            android:parentActivityName=".Activity.MainActivity" />
+            android:parentActivityName=".Activity.MainActivity"
+            tools:ignore="InnerclassSeparator" />
         <activity
             android:name=".Activity.UpdateData"
-            tools:ignore="InnerclassSeparator"
-            android:parentActivityName=".Activity.MainActivity" />
+            android:parentActivityName=".Activity.MainActivity"
+            tools:ignore="InnerclassSeparator" />
+        <activity
+            android:name=".Activity.AttendanceData"
+            android:parentActivityName=".Activity.MainActivity"
+            tools:ignore="InnerclassSeparator" />
     </application>
 
 </manifest>

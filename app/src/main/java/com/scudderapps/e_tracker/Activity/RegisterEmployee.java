@@ -36,7 +36,7 @@ public class RegisterEmployee extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register_employee);
+        setContentView(R.layout.register_employee);
 
         employeeData = new EmployeeData();
 

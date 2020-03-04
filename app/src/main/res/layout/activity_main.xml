@@ -61,8 +61,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/edit"
-            android:layout_gravity="center"
-            android:text="@string/edit" />
+            android:layout_gravity="center" />
 
         <Button
             android:id="@+id/export"
