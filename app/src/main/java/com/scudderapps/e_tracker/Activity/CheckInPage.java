@@ -155,5 +155,6 @@ public class CheckInPage extends AppCompatActivity {
     public void back() {
         Intent home = new Intent(CheckInPage.this, MainActivity.class);
         startActivity(home);
+        finish();
     }
 }

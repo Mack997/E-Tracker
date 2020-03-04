@@ -99,11 +99,14 @@ public class RegisterEmployee extends AppCompatActivity {
                 }
             }
         });
+
+
     }
 
     public void back() {
         Intent home = new Intent(RegisterEmployee.this, MainActivity.class);
         startActivity(home);
+        finish();
     }
 
 }
