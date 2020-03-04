@@ -1,6 +1,5 @@
 package com.scudderapps.e_tracker;
 
-import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,13 +7,12 @@ import android.widget.TextView;
 
 import com.scudderapps.e_tracker.DATA.AttendanceDetails;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.AttendanceHolder> {
@@ -28,17 +26,21 @@ public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.At
         return new AttendanceHolder(view);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onBindViewHolder(@NonNull AttendanceHolder holder, int position) {
 
         AttendanceDetails attendanceEntries = attendanceDetails.get(position);
         String createdAt = attendanceEntries.getCreatedAt();
-        long _date = Long.parseLong(createdAt);
-        final String check_in = new SimpleDateFormat("yy-MM-dd, HH:mm:ss", Locale.getDefault()).format(new Date(_date));
+        Date date = null;
+        try {
+            date = new SimpleDateFormat("yyMMddHHmmss").parse(createdAt);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
-        holder.time.setText(createdAt);
+        holder.time.setText(date.toString());
         holder.status.setText(attendanceEntries.getStatus());
+
     }
 
     @Override
