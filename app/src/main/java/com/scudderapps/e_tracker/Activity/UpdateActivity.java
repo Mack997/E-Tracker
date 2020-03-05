@@ -230,9 +230,9 @@ public class UpdateActivity extends AppCompatActivity {
         } else if (passwordInput.length() < 8) {
             empPassword.setError("Password too short");
             return false;
-        } else if (!PASSWORD_PATTERN.matcher(passwordInput).matches()) {
-            empPassword.setError("Password too weak");
-            return false;
+//        } else if (!PASSWORD_PATTERN.matcher(passwordInput).matches()) {
+//            empPassword.setError("Password too weak");
+//            return false;
         } else if (!passwordInput.equals(confirmPasswordInput)) {
             empConfirmPassword.setError("Password do not match");
             return false;

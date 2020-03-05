@@ -37,4 +37,9 @@ public interface AttendanceDAO {
             "INNER JOIN (select *,  max(createdAt) as Daily_Checkout from attendance_details where code = :code and status = 'Checked Out' group by DateTime(createdAt)) B " +
             "on A.code = B.code")
     Cursor totalTimeCursor(String code);
+
+    @Query("SELECT * FROM attendance_details where code = :code")
+    Cursor currentAttendanceData(String code);
+
+
 }

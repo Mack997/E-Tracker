@@ -83,39 +83,44 @@ public class AttendanceActivity extends AppCompatActivity {
 
                             for (EmployeeData data : fetchedEmployeeDataList) {
 
-                                String fetchedEmpName = data.getName();
-                                fetchedEmpCode = data.getCode();
-                                String fetchedEmpEmail = data.getEmail();
+                                if (fetchedEmployeeDataList.size() > 0) {
+                                    String fetchedEmpName = data.getName();
+                                    fetchedEmpCode = data.getCode();
+                                    String fetchedEmpEmail = data.getEmail();
 
-                                nameView.setText(fetchedEmpName);
-                                codeView.setText(empCode);
-                                emailView.setText(fetchedEmpEmail);
+                                    nameView.setText(fetchedEmpName);
+                                    codeView.setText(empCode);
+                                    emailView.setText(fetchedEmpEmail);
 
-                                List<AttendanceDetails> statusDetails = attendanceDatabase.attendanceDAO().latestEntry(empCode);
+                                    List<AttendanceDetails> statusDetails = attendanceDatabase.attendanceDAO().latestEntry(empCode);
 
-                                List<AttendanceDetails> empCode = attendanceDatabase.attendanceDAO().employeeSearched(AttendanceActivity.this.empCode);
+                                    List<AttendanceDetails> empCode = attendanceDatabase.attendanceDAO().employeeSearched(AttendanceActivity.this.empCode);
 
-                                if (empCode.size() == 0) {
-                                    CheckInBtn.setEnabled(true);
-                                    CheckOutBtn.setEnabled(false);
-                                    CheckInBtn.setBackground(getResources().getDrawable(R.drawable.btn_bg));
-                                    CheckOutBtn.setBackground(getResources().getDrawable(R.drawable.list_bg));
-                                } else {
-                                    for (AttendanceDetails statusString : statusDetails) {
-                                        String status = statusString.getStatus();
-                                        String size = String.valueOf(statusDetails.size());
-                                        if (status.equals("Checked In")) {
-                                            CheckInBtn.setEnabled(false);
-                                            CheckOutBtn.setEnabled(true);
-                                            CheckOutBtn.setBackground(getResources().getDrawable(R.drawable.btn_bg));
-                                            CheckInBtn.setBackground(getResources().getDrawable(R.drawable.list_bg));
-                                        } else {
-                                            CheckInBtn.setEnabled(true);
-                                            CheckOutBtn.setEnabled(false);
-                                            CheckInBtn.setBackground(getResources().getDrawable(R.drawable.btn_bg));
-                                            CheckOutBtn.setBackground(getResources().getDrawable(R.drawable.list_bg));
+                                    if (empCode.size() == 0) {
+                                        CheckInBtn.setEnabled(true);
+                                        CheckOutBtn.setEnabled(false);
+                                        CheckInBtn.setBackground(getResources().getDrawable(R.drawable.btn_bg));
+                                        CheckOutBtn.setBackground(getResources().getDrawable(R.drawable.list_bg));
+                                    } else {
+                                        for (AttendanceDetails statusString : statusDetails) {
+                                            String status = statusString.getStatus();
+                                            String size = String.valueOf(statusDetails.size());
+                                            if (status.equals("Checked In")) {
+                                                CheckInBtn.setEnabled(false);
+                                                CheckOutBtn.setEnabled(true);
+                                                CheckOutBtn.setBackground(getResources().getDrawable(R.drawable.btn_bg));
+                                                CheckInBtn.setBackground(getResources().getDrawable(R.drawable.list_bg));
+                                            } else {
+                                                CheckInBtn.setEnabled(true);
+                                                CheckOutBtn.setEnabled(false);
+                                                CheckInBtn.setBackground(getResources().getDrawable(R.drawable.btn_bg));
+                                                CheckOutBtn.setBackground(getResources().getDrawable(R.drawable.list_bg));
+                                            }
                                         }
                                     }
+                                } else {
+                                    dataView.setVisibility(View.INVISIBLE);
+                                    Toast.makeText(AttendanceActivity.this, "Please enter the correct details", Toast.LENGTH_SHORT).show();
                                 }
                             }
                         } else {

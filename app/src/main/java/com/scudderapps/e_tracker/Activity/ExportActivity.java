@@ -74,7 +74,7 @@ public class ExportActivity extends AppCompatActivity {
             public void onClick(final View v) {
 
                 String code = empCode.getText().toString();
-                InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(attendanceBtn.getWindowToken(), InputMethodManager.RESULT_UNCHANGED_SHOWN);
                 if (validateFields()) {
                     linearLayout.setVisibility(View.VISIBLE);
@@ -190,23 +190,28 @@ public class ExportActivity extends AppCompatActivity {
                     sheet.addCell(new Label(0, 0, "Employee Code"));
                     sheet.addCell(new Label(1, 0, "CheckIn Time"));
                     sheet.addCell(new Label(2, 0, "CheckOut Time"));
+                    sheet.addCell(new Label(3, 0, "Total Time"));
 //                sheet.addCell(new Label(3, 0, "Total Time"));
                     if (cursor.moveToFirst()) {
                         do {
                             String emp_code = cursor.getString(cursor.getColumnIndex("code"));
                             String checkIn = cursor.getString(cursor.getColumnIndex("checkin_Time"));
                             String checkOut = cursor.getString(cursor.getColumnIndex("checkout_Time"));
-//                        String duration = cursor.getString(cursor.getColumnIndex("HoursWorked"));
-                            System.out.print(emp_code);
-                            System.out.print(checkIn);
-                            System.out.print(checkOut);
-//                        System.out.print(duration);
                             Date date = null;
                             Date date2 = null;
+                            Long diffTime = 0L;
+                            Long diffHours = 0L;
+                            Long diffMinutes= 0L;
+                            String diffTotalTime = "";
                             try {
                                 date = new SimpleDateFormat(getString(R.string.date_format)).parse(checkIn);
                                 date2 = new SimpleDateFormat(getString(R.string.date_format)).parse(checkOut);
-                            } catch (ParseException e) {
+                                diffTime = date2.getTime() - date.getTime();
+                                diffHours = diffTime / (60 * 60 * 1000) % 24;
+                                diffMinutes = diffTime / (60 * 1000) % 60;
+                                diffTotalTime = diffHours.toString() +"hr " +diffMinutes.toString()+"min";
+
+                            } catch (ParseException | NullPointerException e) {
                                 e.printStackTrace();
                             }
 
@@ -214,6 +219,7 @@ public class ExportActivity extends AppCompatActivity {
                             sheet.addCell(new Label(0, i, emp_code));
                             sheet.addCell(new Label(1, i, date.toString()));
                             sheet.addCell(new Label(2, i, date2.toString()));
+                            sheet.addCell(new Label(3, i, diffTotalTime));
 //                        sheet.addCell(new Label(3, i, duration));
                         } while (cursor.moveToNext());
                     }
