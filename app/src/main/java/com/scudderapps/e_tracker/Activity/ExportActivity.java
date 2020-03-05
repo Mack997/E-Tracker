@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,6 +36,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 import jxl.Workbook;
 import jxl.WorkbookSettings;
+import jxl.write.BoldStyle;
 import jxl.write.Label;
 import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
@@ -47,6 +49,7 @@ public class AttendanceData extends AppCompatActivity {
     RecyclerView dataView;
     AttendanceAdapter attendanceAdapter;
     AttendanceDatabase attendanceDatabase;
+    LinearLayout linearLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +62,8 @@ public class AttendanceData extends AppCompatActivity {
         dataView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         dataView.setHasFixedSize(true);
         deleteAllDataBtn.setEnabled(false);
+        linearLayout = findViewById(R.id.linearLayout3);
+        linearLayout.setVisibility(View.INVISIBLE);
 
         attendanceDatabase = Room.databaseBuilder(getApplicationContext(),
                 AttendanceDatabase.class, "AttendanceData")
@@ -73,6 +78,7 @@ public class AttendanceData extends AppCompatActivity {
                 InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(attendanceBtn.getWindowToken(), InputMethodManager.RESULT_UNCHANGED_SHOWN);
                 if (validateFields()) {
+                    linearLayout.setVisibility(View.VISIBLE);
                     List<AttendanceDetails> attendanceDetailsList = attendanceDatabase.attendanceDAO().employeeSearched(code);
                     if (!attendanceDetailsList.isEmpty()) {
                         deleteAllDataBtn.setEnabled(true);
@@ -88,6 +94,7 @@ public class AttendanceData extends AppCompatActivity {
                             }
                         });
                     } else {
+                        linearLayout.setVisibility(View.INVISIBLE);
                         createSnackbar(v, "No Records Founds");
                     }
                 }
@@ -110,7 +117,7 @@ public class AttendanceData extends AppCompatActivity {
         View snackbarView = snackbar.getView();
         TextView textView = snackbarView.findViewById(R.id.snackbar_text);
         textView.setTextColor(Color.BLACK);
-        snackbarView.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+        snackbarView.setBackgroundColor(getResources().getColor(R.color.red));
         snackbar.show();
     }
 
