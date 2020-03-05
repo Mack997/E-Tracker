@@ -59,6 +59,14 @@ public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.At
         return attendanceDetails.get(position);
     }
 
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.listener = listener;
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(AttendanceDetails attendanceDetails, int position);
+    }
+
     public class AttendanceHolder extends ViewHolder {
 
         TextView status, time;
@@ -82,14 +90,5 @@ public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.At
             });
         }
 
-    }
-
-    public interface OnItemClickListener {
-        void onItemClick(AttendanceDetails attendanceDetails, int position);
-    }
-
-
-    public void setOnItemClickListener(OnItemClickListener listener) {
-        this.listener = listener;
     }
 }

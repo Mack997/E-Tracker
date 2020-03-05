@@ -41,7 +41,7 @@ import jxl.write.WriteException;
 public class AttendanceData extends AppCompatActivity {
 
     TextInputEditText empCode;
-    Button attendanceBtn, exportBtn;
+    Button attendanceBtn, deleteAllDataBtn;
     RecyclerView dataView;
     AttendanceAdapter attendanceAdapter;
     AttendanceDatabase attendanceDatabase;
@@ -51,11 +51,12 @@ public class AttendanceData extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.attendance_data);
         attendanceBtn = findViewById(R.id.attendanceBtn);
-        exportBtn = findViewById(R.id.deleteAllData);
+        deleteAllDataBtn = findViewById(R.id.deleteAllData);
         dataView = findViewById(R.id.dataView);
         empCode = findViewById(R.id.getDateCode);
         dataView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         dataView.setHasFixedSize(true);
+        deleteAllDataBtn.setEnabled(false);
 
         attendanceDatabase = Room.databaseBuilder(getApplicationContext(),
                 AttendanceDatabase.class, "AttendanceData")
@@ -67,34 +68,46 @@ public class AttendanceData extends AppCompatActivity {
             public void onClick(final View v) {
 
                 String code = empCode.getText().toString();
-                List<AttendanceDetails> attendanceDetailsList = attendanceDatabase.attendanceDAO().employeeSearched(code);
-                attendanceAdapter = new AttendanceAdapter();
-                dataView.setAdapter(attendanceAdapter);
-                attendanceAdapter.setAttendanceData(attendanceDetailsList);
-                attendanceAdapter.setOnItemClickListener(new AttendanceAdapter.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(final AttendanceDetails attendanceDetails, final int position) {
-                        attendanceDatabase.attendanceDAO().delete(attendanceAdapter.getAttendanceAt(position));
-                        Snackbar snackbar = Snackbar.make(v, "Deleted ", Snackbar.LENGTH_LONG);
-                        View view = snackbar.getView();
-                        TextView textView = view.findViewById(R.id.snackbar_text);
-                        textView.setTextColor(Color.BLACK);
-                        view.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-                        snackbar.show();
+                if (validateFields()) {
+                    List<AttendanceDetails> attendanceDetailsList = attendanceDatabase.attendanceDAO().employeeSearched(code);
+                    if (!attendanceDetailsList.isEmpty()) {
+                        deleteAllDataBtn.setEnabled(true);
+                        attendanceAdapter = new AttendanceAdapter();
+                        dataView.setAdapter(attendanceAdapter);
+                        attendanceAdapter.setAttendanceData(attendanceDetailsList);
+                        attendanceAdapter.setOnItemClickListener(new AttendanceAdapter.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(final AttendanceDetails attendanceDetails, final int position) {
+                                attendanceDatabase.attendanceDAO().delete(attendanceAdapter.getAttendanceAt(position));
+                                createSnackbar(v, "Deleted");
 
+                            }
+                        });
+                    } else {
+                        createSnackbar(v, "No Records Founds");
                     }
-                });
+                }
             }
         });
 
-        exportBtn.setOnClickListener(new View.OnClickListener() {
+        deleteAllDataBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String code = empCode.getText().toString();
                 attendanceDatabase.attendanceDAO().deleteALl(code);
+                createSnackbar(v, "All records deleted");
                 back();
             }
         });
+    }
+
+    public void createSnackbar(View view, String text) {
+        Snackbar snackbar = Snackbar.make(view, text, Snackbar.LENGTH_LONG);
+        View snackbarView = snackbar.getView();
+        TextView textView = snackbarView.findViewById(R.id.snackbar_text);
+        textView.setTextColor(Color.BLACK);
+        snackbarView.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+        snackbar.show();
     }
 
     @Override
@@ -116,6 +129,18 @@ public class AttendanceData extends AppCompatActivity {
             case R.id.exportAllAttendanceRecord:
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private boolean validateFields() {
+        String Code = empCode.getText().toString().trim();
+
+        if (Code.isEmpty()) {
+            empCode.setError(getString(R.string.empty_field_error));
+            return false;
+        } else {
+            empCode.setError(null);
+            return true;
         }
     }
 

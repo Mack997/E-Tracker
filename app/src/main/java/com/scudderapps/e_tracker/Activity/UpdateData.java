@@ -23,22 +23,19 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class UpdateData extends AppCompatActivity {
 
+    private static final Pattern NAME_PATTERN = Pattern.compile("^[A-Za-z\\s]{1,}[\\.]{0,1}[A-Za-z\\s]{0,}$");
+    private static final Pattern PHONE_PATTERN = Pattern.compile("^[7-9][0-9]{9}$");
+    private static final Pattern PASSWORD_PATTERN = Pattern.compile("^((?=.*[a-zA-Z]).{8,20})");
     TextInputEditText searchEmpCode, empName, empPhone, empEmail, empPassword;
     TextView empDob;
     Button searchEmpBtn, updateBtn, deleteBtn;
+    String emp_dob_updated;
+    List<EmployeeData> searchList;
+    String emp_code;
     private SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMMM, yyyy");
     private Calendar c;
     private int month, day, year;
-    String emp_dob_updated;
-    List<EmployeeData> searchList;
     private EmployeeData employeeData;
-    String emp_code;
-
-    private static final Pattern NAME_PATTERN = Pattern.compile("^[A-Za-z\\s]{1,}[\\.]{0,1}[A-Za-z\\s]{0,}$");
-
-    private static final Pattern PHONE_PATTERN = Pattern.compile("^[7-9][0-9]{9}$");
-
-    private static final Pattern PASSWORD_PATTERN = Pattern.compile("^((?=.*[a-zA-Z]).{8,20})");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -190,9 +187,9 @@ public class UpdateData extends AppCompatActivity {
         }
     }
 
-    private boolean validateDatOfBirth(){
+    private boolean validateDatOfBirth() {
         String dobInput = empDob.getText().toString().trim();
-        if (dobInput.isEmpty()){
+        if (dobInput.isEmpty()) {
             empDob.setError("Field can't be empty");
             return false;
         } else {
@@ -201,9 +198,9 @@ public class UpdateData extends AppCompatActivity {
         }
     }
 
-    private boolean validatePhoneNumber(){
+    private boolean validatePhoneNumber() {
         String phoneInput = empPhone.getText().toString().trim();
-        if (phoneInput.isEmpty()){
+        if (phoneInput.isEmpty()) {
             empPhone.setError("Field can't be empty");
             return false;
         } else if (!PHONE_PATTERN.matcher(phoneInput).matches()) {

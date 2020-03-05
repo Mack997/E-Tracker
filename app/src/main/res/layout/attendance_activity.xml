@@ -41,12 +41,12 @@
         android:text="@string/search_employee" />
 
     <Button
+        android:id="@+id/fingerprint"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/fingerprint"
         android:layout_marginTop="16dp"
         android:enabled="false"
-        android:text="@string/scan_fingerprint"/>
+        android:text="@string/scan_fingerprint" />
 
 
     <LinearLayout
@@ -56,45 +56,45 @@
         android:background="@drawable/background"
         android:orientation="horizontal">
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <TextView
+                android:id="@+id/s_c"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:id="@+id/s_c"
-                android:textSize="18sp"
-                android:textColor="@android:color/black"
                 android:text="@string/employee_code"
+                android:textColor="@android:color/black"
+                android:textSize="18sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
+                android:id="@+id/s_n"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:id="@+id/s_n"
-                android:textSize="18sp"
                 android:text="Name: "
                 android:textColor="@android:color/black"
+                android:textSize="18sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/s_c" />
 
             <TextView
+                android:id="@+id/s_d"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:id="@+id/s_d"
-                android:textSize="18sp"
                 android:text="Email:"
                 android:textColor="@android:color/black"
+                android:textSize="18sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/s_n" />
 
-            </LinearLayout>
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -125,8 +125,8 @@
                 android:id="@+id/searchedEmail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="18sp"
                 android:layout_margin="10dp"
+                android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/s_d"
                 app:layout_constraintTop_toBottomOf="@+id/searchedName" />

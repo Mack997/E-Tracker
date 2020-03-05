@@ -58,27 +58,27 @@
             android:id="@+id/view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Status"
-            android:layout_weight="1"
             android:layout_margin="10dp"
-            android:textStyle="bold"
+            android:layout_weight="1"
             android:fontFamily="monospace"
+            android:text="Status"
             android:textColor="@android:color/black"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/View"
-            android:textAlignment="textEnd"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:text="Time"
-            android:textStyle="bold"
-            android:fontFamily="monospace"
-            android:layout_weight="1"
             android:layout_marginTop="10dp"
+            android:layout_weight="1"
+            android:fontFamily="monospace"
+            android:text="Time"
+            android:textAlignment="textEnd"
             android:textColor="@android:color/black"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
     </LinearLayout>
 

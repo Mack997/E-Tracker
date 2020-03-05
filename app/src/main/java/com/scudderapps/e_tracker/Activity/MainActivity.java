@@ -13,8 +13,8 @@ import androidx.room.Room;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button register, attendance, edit, export;
     public static EmployeeDatabase employeeDatabase;
+    Button register, attendance, edit, export;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

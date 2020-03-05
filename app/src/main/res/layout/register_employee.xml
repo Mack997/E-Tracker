@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activity.RegisterEmployee"
+    android:layout_margin="10dp"
     android:orientation="vertical"
-    android:layout_margin="10dp">
+    tools:context=".Activity.RegisterEmployee">
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
@@ -14,11 +13,11 @@
         android:layout_marginTop="5dp">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/ecode"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/ecode"
-            android:inputType="text"
-            android:hint="@string/enter_employee_code"/>
+            android:hint="@string/enter_employee_code"
+            android:inputType="text" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -27,11 +26,11 @@
         android:layout_height="wrap_content">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:id="@+id/name"
-            android:inputType="textCapWords"
-            android:hint="@string/enter_name"/>
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/enter_name"
+            android:inputType="textCapWords" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -42,12 +41,12 @@
         android:layout_marginTop="5dp">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:id="@+id/phoneNumber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/enter_phone_number"
             android:inputType="number"
-            android:maxLength="10"
-            android:hint="@string/enter_phone_number"/>
+            android:maxLength="10" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -57,12 +56,12 @@
         android:layout_marginTop="5dp">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:id="@+id/email"
-            android:maxLength="60"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/enter_email"
             android:inputType="textEmailAddress"
-            android:hint="@string/enter_email"/>
+            android:maxLength="60" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -72,12 +71,12 @@
         android:layout_marginTop="5dp">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/password"
-            android:maxLength="12"
+            android:hint="@string/enter_password"
             android:inputType="textPassword"
-            android:hint="@string/enter_password"/>
+            android:maxLength="12" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -87,37 +86,37 @@
         android:layout_marginTop="10dp">
 
         <TextView
+            android:id="@+id/dob"
             android:layout_width="match_parent"
             android:layout_height="30dp"
-            android:id="@+id/dob"
-            android:textSize="18sp"
-            android:textColor="@android:color/black"
             android:layout_marginStart="4dp"
-            android:hint="@string/date_of_birth" />
+            android:hint="@string/date_of_birth"
+            android:textColor="@android:color/black"
+            android:textSize="18sp" />
 
         <View
-            android:layout_marginStart="4dp"
             android:layout_width="match_parent"
             android:layout_height="2dp"
-            android:background="@android:color/darker_gray"/>
+            android:layout_marginStart="4dp"
+            android:background="@android:color/darker_gray" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
+        android:id="@+id/fingerprint"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/fingerprint"
         android:layout_marginTop="16dp"
         android:enabled="false"
-        android:text="@string/add_fingerprint"/>
+        android:text="@string/add_fingerprint" />
 
     <Button
-        android:layout_gravity="center"
+        android:id="@+id/save"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/save"
+        android:layout_gravity="center"
         android:layout_marginTop="16dp"
         android:background="@android:color/holo_green_light"
-        android:text="@string/save"/>
+        android:text="@string/save" />
 
 </LinearLayout>

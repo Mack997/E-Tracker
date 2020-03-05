@@ -3,11 +3,13 @@ package com.scudderapps.e_tracker.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.google.android.material.textfield.TextInputEditText;
 import com.scudderapps.e_tracker.DATA.EmployeeData;
 import com.scudderapps.e_tracker.R;
@@ -15,29 +17,23 @@ import com.scudderapps.e_tracker.R;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
-import android.util.Patterns;
 import java.util.regex.Pattern;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 public class RegisterEmployee extends AppCompatActivity {
 
+    private static final Pattern NAME_PATTERN = Pattern.compile("^[A-Za-z\\s]{1,}[\\.]{0,1}[A-Za-z\\s]{0,}$");
+    private static final Pattern PHONE_PATTERN = Pattern.compile("^[7-9][0-9]{9}$");
+    private static final Pattern PASSWORD_PATTERN = Pattern.compile("^((?=.*[a-zA-Z]).{8,20})");
     private Calendar c;
     private int month, day, year;
     private SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMMM, yyyy");
-
     private TextInputEditText name, code, pass, phone, email;
     private TextView dob;
     private Button save;
     private String eName, ePass, eEmail, eCode, ePhone, eDob;
-
     private EmployeeData employeeData;
-
-    private static final Pattern NAME_PATTERN = Pattern.compile("^[A-Za-z\\s]{1,}[\\.]{0,1}[A-Za-z\\s]{0,}$");
-
-    private static final Pattern PHONE_PATTERN = Pattern.compile("^[7-9][0-9]{9}$");
-
-    private static final Pattern PASSWORD_PATTERN = Pattern.compile("^((?=.*[a-zA-Z]).{8,20})");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -149,8 +145,7 @@ public class RegisterEmployee extends AppCompatActivity {
         } else if (passwordInput.length() < 8) {
             pass.setError("Password too short");
             return false;
-        }
-        else if (!PASSWORD_PATTERN.matcher(passwordInput).matches()) {
+        } else if (!PASSWORD_PATTERN.matcher(passwordInput).matches()) {
             pass.setError("Password too weak");
             return false;
         } else {
@@ -159,9 +154,9 @@ public class RegisterEmployee extends AppCompatActivity {
         }
     }
 
-    private boolean validateDatOfBirth(){
+    private boolean validateDatOfBirth() {
         String dobInput = dob.getText().toString().trim();
-        if (dobInput.isEmpty()){
+        if (dobInput.isEmpty()) {
             dob.setError("Field can't be empty");
             return false;
         } else {
@@ -170,9 +165,9 @@ public class RegisterEmployee extends AppCompatActivity {
         }
     }
 
-    private boolean validatePhoneNumber(){
+    private boolean validatePhoneNumber() {
         String phoneInput = phone.getText().toString().trim();
-        if (phoneInput.isEmpty()){
+        if (phoneInput.isEmpty()) {
             phone.setError("Field can't be empty");
             return false;
         } else if (!PHONE_PATTERN.matcher(phoneInput).matches()) {
