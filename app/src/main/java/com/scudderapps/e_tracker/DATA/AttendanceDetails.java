@@ -9,11 +9,9 @@ public class AttendanceDetails {
 
     @PrimaryKey(autoGenerate = true)
     private int id;
-
-    @ForeignKey(entity = EmployeeData.class, parentColumns = "emp_code", childColumns = "emp_code")
-    private String Code;
+    private String code;
     private String createdAt;
-    private String Status;
+    private String status;
 
     public int getId() {
         return id;
@@ -24,19 +22,19 @@ public class AttendanceDetails {
     }
 
     public String getStatus() {
-        return Status;
+        return status;
     }
 
     public void setStatus(String status) {
-        Status = status;
+        this.status = status;
     }
 
     public String getCode() {
-        return Code;
+        return code;
     }
 
     public void setCode(String code) {
-        Code = code;
+        this.code = code;
     }
 
     public String getCreatedAt() {

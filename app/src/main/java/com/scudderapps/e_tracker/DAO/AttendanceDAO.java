@@ -15,23 +15,26 @@ import androidx.room.Query;
 public interface AttendanceDAO {
 
     @Insert
-    void addAttendance(AttendanceDetails attendanceDetails);
-
-    @Query("SELECT * FROM attendance_details WHERE Code = :code")
-    List<AttendanceDetails> employeeSearched(String code);
-
-    @Query("SELECT * , MAX(createdAt)  FROM attendance_details WHERE Code = :code")
-    List<AttendanceDetails> employeeNew(String code);
+    void insert(AttendanceDetails attendanceDetails);
 
     @Delete
     void delete(AttendanceDetails attendanceDetails);
 
-    @Query("DELETE from attendance_details where Code = :code")
+    @Query("DELETE from attendance_details where code = :code")
     void deleteALl(String code);
 
-    @Query("select A.Code as code, A.Daily_Checkin as checkin_Time, B.Daily_Checkout as checkout_Time " +
-            "from (select *,  min(createdAt) as Daily_Checkin from attendance_details where Code = :code and Status = 'Checked In' group by DateTime(createdAt)) A " +
-            "INNER JOIN (select *,  max(createdAt) as Daily_Checkout from attendance_details where Code = :code and Status = 'Checked Out' group by DateTime(createdAt)) B " +
-            "on A.Code = B.Code")
-    Cursor cursor(String code);
+    @Query("SELECT * FROM attendance_details")
+    Cursor allAttendanceData();
+
+    @Query("SELECT * FROM attendance_details WHERE code = :code")
+    List<AttendanceDetails> employeeSearched(String code);
+
+    @Query("SELECT * , MAX(createdAt)  FROM attendance_details WHERE code = :code")
+    List<AttendanceDetails> latestEntry(String code);
+
+    @Query("select A.code as code, A.Daily_Checkin as checkin_Time, B.Daily_Checkout as checkout_Time " +
+            "from (select *,  min(createdAt) as Daily_Checkin from attendance_details where code = :code and status = 'Checked In' group by DateTime(createdAt)) A " +
+            "INNER JOIN (select *,  max(createdAt) as Daily_Checkout from attendance_details where code = :code and status = 'Checked Out' group by DateTime(createdAt)) B " +
+            "on A.code = B.code")
+    Cursor totalTimeCursor(String code);
 }

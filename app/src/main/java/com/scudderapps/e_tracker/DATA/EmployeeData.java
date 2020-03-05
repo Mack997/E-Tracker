@@ -1,7 +1,6 @@
 package com.scudderapps.e_tracker.DATA;
 
 import androidx.annotation.NonNull;
-import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
@@ -10,9 +9,8 @@ public class EmployeeData {
 
     @PrimaryKey
     @NonNull
-    @ColumnInfo(name = "emp_code")
-    private String Code;
-    private String Name;
+    private String code;
+    private String name;
     private String date;
     private String password;
     private String email;
@@ -20,19 +18,19 @@ public class EmployeeData {
 
 
     public String getName() {
-        return Name;
+        return name;
     }
 
     public void setName(String name) {
-        this.Name = name;
+        this.name = name;
     }
 
     public String getCode() {
-        return Code;
+        return code;
     }
 
     public void setCode(String code) {
-        Code = code;
+        this.code = code;
     }
 
     public String getDate() {

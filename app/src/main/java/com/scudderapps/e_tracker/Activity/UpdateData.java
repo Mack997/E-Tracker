@@ -58,7 +58,7 @@ public class UpdateData extends AppCompatActivity {
             public void onClick(View v) {
 
                 emp_code = searchEmpCode.getText().toString();
-                searchList = MainActivity.employeeDatabase.employeeDAO().Employee(emp_code);
+                searchList = MainActivity.employeeDatabase.employeeDAO().getSelectedEmployee(emp_code);
 
                 for (EmployeeData employeeData : searchList) {
                     String emp_name = employeeData.getName();
@@ -115,7 +115,7 @@ public class UpdateData extends AppCompatActivity {
                     employeeData.setPhone(emp_phone_updated);
                     employeeData.setDate(emp_dob_updated);
 
-                    List<EmployeeData> updatedDetails = MainActivity.employeeDatabase.employeeDAO().Employee(emp_code);
+                    List<EmployeeData> updatedDetails = MainActivity.employeeDatabase.employeeDAO().getSelectedEmployee(emp_code);
 
                     if (updatedDetails.size() != 0) {
                         MainActivity.employeeDatabase.employeeDAO().update(employeeData);

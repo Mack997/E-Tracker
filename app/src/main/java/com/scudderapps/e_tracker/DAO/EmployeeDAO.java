@@ -15,10 +15,13 @@ import androidx.room.Update;
 public interface EmployeeDAO {
 
     @Insert
-    void addEmployee(EmployeeData employeeData);
+    void insert(EmployeeData employeeData);
 
-    @Query("SELECT * FROM employee_data where emp_code = :eCode and password = :ePass")
-    List<EmployeeData> getEmployee(String eCode, String ePass);
+    @Update
+    void update(EmployeeData employeeData);
+
+    @Query("SELECT * FROM employee_data where code = :eCode and password = :ePass")
+    List<EmployeeData> searchEmployee(String eCode, String ePass);
 
     @Query("SELECT * FROM employee_data")
     List<EmployeeData> allEmployee();
@@ -26,12 +29,9 @@ public interface EmployeeDAO {
     @Query("SELECT * FROM employee_data")
     Cursor allEmployeeData();
 
-    @Query("SELECT * FROM employee_data Where emp_code = :code")
-    List<EmployeeData> Employee(String code);
+    @Query("SELECT * FROM employee_data Where code = :code")
+    List<EmployeeData> getSelectedEmployee(String code);
 
-    @Update
-    void update(EmployeeData employeeData);
-
-    @Query("delete from employee_data where emp_code = :code")
+    @Query("delete from employee_data where code = :code")
     void delete(String code);
 }

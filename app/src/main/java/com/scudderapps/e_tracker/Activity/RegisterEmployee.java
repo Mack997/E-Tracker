@@ -91,10 +91,10 @@ public class RegisterEmployee extends AppCompatActivity {
                     employeeData.setPassword(ePass);
                     employeeData.setDate(eDob);
 
-                    List<EmployeeData> allEmployeeList = MainActivity.employeeDatabase.employeeDAO().Employee(eCode);
+                    List<EmployeeData> allEmployeeList = MainActivity.employeeDatabase.employeeDAO().getSelectedEmployee(eCode);
 
                     if (allEmployeeList.size() == 0) {
-                        MainActivity.employeeDatabase.employeeDAO().addEmployee(employeeData);
+                        MainActivity.employeeDatabase.employeeDAO().insert(employeeData);
                         Toast.makeText(RegisterEmployee.this, R.string.registration_done, Toast.LENGTH_SHORT).show();
                         back();
                     } else {

@@ -1,10 +1,12 @@
 package com.scudderapps.e_tracker.Activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -64,6 +66,8 @@ public class CheckInPage extends AppCompatActivity {
             public void onClick(View v) {
                 empCode = editCode.getText().toString();
                 empPass = editPass.getText().toString();
+                InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(searchEmployeeBtn.getWindowToken(), InputMethodManager.RESULT_UNCHANGED_SHOWN);
 
                 if (validateFields() && validatePass()) {
 
@@ -74,7 +78,7 @@ public class CheckInPage extends AppCompatActivity {
 
                         if (empCode.equals(allEmpCode) && empPass.equals(allEmpPass)) {
 
-                            List<EmployeeData> fetchedEmployeeDataList = MainActivity.employeeDatabase.employeeDAO().getEmployee(empCode, empPass);
+                            List<EmployeeData> fetchedEmployeeDataList = MainActivity.employeeDatabase.employeeDAO().searchEmployee(empCode, empPass);
 
                             for (EmployeeData data : fetchedEmployeeDataList) {
 
@@ -86,7 +90,7 @@ public class CheckInPage extends AppCompatActivity {
                                 codeView.setText(empCode);
                                 emailView.setText(fetchedEmpEmail);
 
-                                List<AttendanceDetails> statusDetails = attendanceDatabase.attendanceDAO().employeeNew(empCode);
+                                List<AttendanceDetails> statusDetails = attendanceDatabase.attendanceDAO().latestEntry(empCode);
 
                                 List<AttendanceDetails> empCode = attendanceDatabase.attendanceDAO().employeeSearched(CheckInPage.this.empCode);
 
@@ -130,7 +134,7 @@ public class CheckInPage extends AppCompatActivity {
                 attendanceDetails.setCreatedAt(check_in);
                 attendanceDetails.setStatus(status);
 
-                attendanceDatabase.attendanceDAO().addAttendance(attendanceDetails);
+                attendanceDatabase.attendanceDAO().insert(attendanceDetails);
                 Toast.makeText(CheckInPage.this, "Checked In", Toast.LENGTH_SHORT).show();
                 back();
             }
@@ -144,7 +148,7 @@ public class CheckInPage extends AppCompatActivity {
                 attendanceDetails.setCreatedAt(check_in);
                 attendanceDetails.setStatus(status);
 
-                attendanceDatabase.attendanceDAO().addAttendance(attendanceDetails);
+                attendanceDatabase.attendanceDAO().insert(attendanceDetails);
                 Toast.makeText(CheckInPage.this, "Checked Out", Toast.LENGTH_SHORT).show();
                 back();
             }

@@ -1,5 +1,6 @@
 package com.scudderapps.e_tracker.Activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
@@ -8,6 +9,7 @@ import android.os.Environment;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -68,6 +70,8 @@ public class AttendanceData extends AppCompatActivity {
             public void onClick(final View v) {
 
                 String code = empCode.getText().toString();
+                InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(attendanceBtn.getWindowToken(), InputMethodManager.RESULT_UNCHANGED_SHOWN);
                 if (validateFields()) {
                     List<AttendanceDetails> attendanceDetailsList = attendanceDatabase.attendanceDAO().employeeSearched(code);
                     if (!attendanceDetailsList.isEmpty()) {
@@ -127,6 +131,8 @@ public class AttendanceData extends AppCompatActivity {
                 exportCurrentEmployeeData();
                 return true;
             case R.id.exportAllAttendanceRecord:
+                exportAllAttendanceRecord();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -152,72 +158,76 @@ public class AttendanceData extends AppCompatActivity {
 
     public void exportCurrentEmployeeData() {
         String CODE = empCode.getText().toString();
-        String currentTime = new SimpleDateFormat(" d MMM yyyy HH:mm:ss", Locale.getDefault()).format(new Date());
+        if (!CODE.isEmpty()) {
+            String currentTime = new SimpleDateFormat(" d MMM yyyy HH:mm:ss", Locale.getDefault()).format(new Date());
 
-        final String fileName = "AttendanceData-" + currentTime + ".xls";
-        WorkbookSettings wbSettings = new WorkbookSettings();
-        wbSettings.setLocale(new Locale("en", "EN"));
-        WritableWorkbook workbook;
+            final String fileName = "AttendanceData-" + currentTime + ".xls";
+            WorkbookSettings wbSettings = new WorkbookSettings();
+            wbSettings.setLocale(new Locale("en", "EN"));
+            WritableWorkbook workbook;
 
-        Cursor cursor = attendanceDatabase.attendanceDAO().cursor(CODE);
+            Cursor cursor = attendanceDatabase.attendanceDAO().totalTimeCursor(CODE);
 
-        File sdCard = Environment.getExternalStorageDirectory();
-        File directory = new File(sdCard.getAbsolutePath() + "/ETracker/Attendance Data");
-        if (!directory.isDirectory()) {
-            directory.mkdirs();
-        }
-        File file = new File(directory, fileName);
-
-        try {
-            workbook = Workbook.createWorkbook(file, wbSettings);
-            //Excel sheet name. 0 represents first sheet
-            WritableSheet sheet = workbook.createSheet("Attendance Data", 0);
+            File sdCard = Environment.getExternalStorageDirectory();
+            File directory = new File(sdCard.getAbsolutePath() + "/ETracker/Attendance Data");
+            if (!directory.isDirectory()) {
+                directory.mkdirs();
+            }
+            File file = new File(directory, fileName);
 
             try {
-                sheet.addCell(new Label(0, 0, "Employee Code"));
-                sheet.addCell(new Label(1, 0, "CheckIn Time"));
-                sheet.addCell(new Label(2, 0, "CheckOut Time"));
+                workbook = Workbook.createWorkbook(file, wbSettings);
+                //Excel sheet name. 0 represents first sheet
+                WritableSheet sheet = workbook.createSheet("Attendance Data", 0);
+
+                try {
+                    sheet.addCell(new Label(0, 0, "Employee Code"));
+                    sheet.addCell(new Label(1, 0, "CheckIn Time"));
+                    sheet.addCell(new Label(2, 0, "CheckOut Time"));
 //                sheet.addCell(new Label(3, 0, "Total Time"));
-                if (cursor.moveToFirst()) {
-                    do {
-                        String emp_code = cursor.getString(cursor.getColumnIndex("code"));
-                        String checkIn = cursor.getString(cursor.getColumnIndex("checkin_Time"));
-                        String checkOut = cursor.getString(cursor.getColumnIndex("checkout_Time"));
+                    if (cursor.moveToFirst()) {
+                        do {
+                            String emp_code = cursor.getString(cursor.getColumnIndex("code"));
+                            String checkIn = cursor.getString(cursor.getColumnIndex("checkin_Time"));
+                            String checkOut = cursor.getString(cursor.getColumnIndex("checkout_Time"));
 //                        String duration = cursor.getString(cursor.getColumnIndex("HoursWorked"));
-                        System.out.print(emp_code);
-                        System.out.print(checkIn);
-                        System.out.print(checkOut);
+                            System.out.print(emp_code);
+                            System.out.print(checkIn);
+                            System.out.print(checkOut);
 //                        System.out.print(duration);
-                        Date date = null;
-                        Date date2 = null;
-                        try {
-                            date = new SimpleDateFormat(getString(R.string.date_format)).parse(checkIn);
-                            date2 = new SimpleDateFormat(getString(R.string.date_format)).parse(checkOut);
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                        }
+                            Date date = null;
+                            Date date2 = null;
+                            try {
+                                date = new SimpleDateFormat(getString(R.string.date_format)).parse(checkIn);
+                                date2 = new SimpleDateFormat(getString(R.string.date_format)).parse(checkOut);
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
 
-                        int i = cursor.getPosition() + 1;
-                        sheet.addCell(new Label(0, i, emp_code));
-                        sheet.addCell(new Label(1, i, date.toString()));
-                        sheet.addCell(new Label(2, i, date2.toString()));
+                            int i = cursor.getPosition() + 1;
+                            sheet.addCell(new Label(0, i, emp_code));
+                            sheet.addCell(new Label(1, i, date.toString()));
+                            sheet.addCell(new Label(2, i, date2.toString()));
 //                        sheet.addCell(new Label(3, i, duration));
-                    } while (cursor.moveToNext());
+                        } while (cursor.moveToNext());
+                    }
+                    cursor.close();
+                    Toast.makeText(AttendanceData.this, R.string.export_msg, Toast.LENGTH_SHORT).show();
+                    back();
+                } catch (WriteException e) {
+                    e.printStackTrace();
                 }
-                cursor.close();
-                Toast.makeText(AttendanceData.this, R.string.export_msg, Toast.LENGTH_SHORT).show();
-                back();
-            } catch (WriteException e) {
+                workbook.write();
+                try {
+                    workbook.close();
+                } catch (WriteException e) {
+                    e.printStackTrace();
+                }
+            } catch (IOException e) {
                 e.printStackTrace();
             }
-            workbook.write();
-            try {
-                workbook.close();
-            } catch (WriteException e) {
-                e.printStackTrace();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+        } else {
+            Toast.makeText(this, "Please enter the employee code to get the details", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -240,7 +250,6 @@ public class AttendanceData extends AppCompatActivity {
 
         try {
             workbook = Workbook.createWorkbook(file, wbSettings);
-            //Excel sheet name. 0 represents first sheet
             WritableSheet sheet = workbook.createSheet("Employee Data", 0);
 
             try {
@@ -251,8 +260,8 @@ public class AttendanceData extends AppCompatActivity {
                 sheet.addCell(new Label(4, 0, "Date of Birth"));
                 if (cursor.moveToFirst()) {
                     do {
-                        String emp_code = cursor.getString(cursor.getColumnIndex("emp_code"));
-                        String name = cursor.getString(cursor.getColumnIndex("Name"));
+                        String emp_code = cursor.getString(cursor.getColumnIndex("code"));
+                        String name = cursor.getString(cursor.getColumnIndex("name"));
                         String email = cursor.getString(cursor.getColumnIndex("email"));
                         String contact = cursor.getString(cursor.getColumnIndex("phone"));
                         String dob = cursor.getString(cursor.getColumnIndex("date"));
@@ -262,6 +271,69 @@ public class AttendanceData extends AppCompatActivity {
                         sheet.addCell(new Label(2, i, email));
                         sheet.addCell(new Label(3, i, contact));
                         sheet.addCell(new Label(4, i, dob));
+                    } while (cursor.moveToNext());
+                }
+                cursor.close();
+                Toast.makeText(AttendanceData.this, R.string.export_msg, Toast.LENGTH_SHORT).show();
+                back();
+            } catch (WriteException e) {
+                e.printStackTrace();
+            }
+            workbook.write();
+            try {
+                workbook.close();
+            } catch (WriteException e) {
+                e.printStackTrace();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void exportAllAttendanceRecord() {
+        String currentTime = new SimpleDateFormat(" d MMM yyyy HH:mm:ss", Locale.getDefault()).format(new Date());
+
+        final String fileName = "AttendanceData-" + currentTime + ".xls";
+        WorkbookSettings wbSettings = new WorkbookSettings();
+        wbSettings.setLocale(new Locale("en", "EN"));
+        WritableWorkbook workbook;
+
+        Cursor cursor = attendanceDatabase.attendanceDAO().allAttendanceData();
+
+        File sdCard = Environment.getExternalStorageDirectory();
+        File directory = new File(sdCard.getAbsolutePath() + "/ETracker/All Attendance Data");
+        if (!directory.isDirectory()) {
+            directory.mkdirs();
+        }
+        File file = new File(directory, fileName);
+
+        try {
+            workbook = Workbook.createWorkbook(file, wbSettings);
+            WritableSheet sheet = workbook.createSheet("All Attendance Data", 0);
+
+            try {
+                sheet.addCell(new Label(0, 0, "Employee Code"));
+                sheet.addCell(new Label(1, 0, "Timestamp"));
+                sheet.addCell(new Label(2, 0, "Status"));
+                if (cursor.moveToFirst()) {
+                    do {
+                        String emp_code = cursor.getString(cursor.getColumnIndex("code"));
+                        String checkIn = cursor.getString(cursor.getColumnIndex("createdAt"));
+                        String status = cursor.getString(cursor.getColumnIndex("status"));
+                        System.out.print(emp_code);
+                        System.out.print(checkIn);
+                        System.out.print(status);
+                        Date date = null;
+                        try {
+                            date = new SimpleDateFormat(getString(R.string.date_format)).parse(checkIn);
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+
+                        int i = cursor.getPosition() + 1;
+                        sheet.addCell(new Label(0, i, emp_code));
+                        sheet.addCell(new Label(1, i, date.toString()));
+                        sheet.addCell(new Label(2, i, status));
                     } while (cursor.moveToNext());
                 }
                 cursor.close();
