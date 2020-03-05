@@ -4,9 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_margin="10dp"
+    tools:context=".Activity.RegisterActivity"
     android:orientation="vertical"
-    tools:context=".Activity.RegisterActivity">
+    android:layout_margin="10dp">
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
@@ -14,11 +14,11 @@
         android:layout_marginTop="5dp">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/ecode"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/enter_employee_code"
-            android:inputType="text" />
+            android:id="@+id/ecode"
+            android:inputType="text"
+            android:hint="Enter Employee Code"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -27,14 +27,13 @@
         android:layout_height="wrap_content">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:id="@+id/name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/enter_name"
-            android:inputType="textCapWords" />
+            android:inputType="textCapWords"
+            android:hint="Enter Name"/>
 
     </com.google.android.material.textfield.TextInputLayout>
-
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
@@ -42,12 +41,12 @@
         android:layout_marginTop="5dp">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:id="@+id/phoneNumber"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/enter_phone_number"
             android:inputType="number"
-            android:maxLength="10" />
+            android:maxLength="10"
+            android:hint="Enter Phone Number"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -57,12 +56,12 @@
         android:layout_marginTop="5dp">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:id="@+id/email"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/enter_email"
+            android:maxLength="60"
             android:inputType="textEmailAddress"
-            android:maxLength="60" />
+            android:hint="Enter Email"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -73,12 +72,12 @@
         android:layout_marginTop="5dp">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:id="@+id/password"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/enter_password"
+            android:maxLength="12"
             android:inputType="textPassword"
-            android:maxLength="8" />
+            android:hint="Enter Password"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -89,12 +88,12 @@
         android:layout_marginTop="5dp">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/confirmPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/confirm_password"
+            android:id="@+id/confirmPassword"
+            android:maxLength="12"
             android:inputType="textPassword"
-            android:maxLength="8" />
+            android:hint="Confirm Password"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -108,7 +107,7 @@
             android:layout_width="match_parent"
             android:layout_height="30dp"
             android:layout_marginStart="4dp"
-            android:hint="@string/date_of_birth"
+            android:hint="Choose Date of Birth"
             android:textColor="@android:color/black"
             android:textSize="18sp" />
 
@@ -121,21 +120,22 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
-        android:id="@+id/fingerprint"
+        android:layout_gravity="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:id="@+id/addFingerprint"
         android:layout_marginTop="16dp"
         android:enabled="false"
-        android:text="@string/add_fingerprint" />
+        android:text="Add Fingerprint"/>
 
     <Button
-        android:id="@+id/save"
+        android:layout_gravity="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
+        android:id="@+id/save"
         android:layout_marginTop="16dp"
-        android:background="@drawable/btn_bg"
-        android:text="@string/save"
-        android:textColor="@android:color/white"/>
+        android:background="@color/colorAccent"
+        android:textColor="@color/white"
+        android:text="Save"/>
 
 </LinearLayout>

@@ -23,23 +23,26 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    private static final Pattern NAME_PATTERN = Pattern.compile("^[A-Za-z\\s]{1,}[\\.]{0,1}[A-Za-z\\s]{0,}$");
-    private static final Pattern PHONE_PATTERN = Pattern.compile("^[7-9][0-9]{9}$");
-//    private static final Pattern PASSWORD_PATTERN = Pattern.compile("^((?=.*[a-zA-Z]).{8,20})");
     private Calendar c;
     private int month, day, year;
     private SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMMM, yyyy");
-    private TextInputEditText name, code, pass, phone, email, confirmPassword;
+
+    private TextInputEditText name, code, pass, phone, email, cPass;
     private TextView dob;
     private Button save;
     private String eName, ePass, eEmail, eCode, ePhone, eDob;
+
     private EmployeeData employeeData;
+
+    private static final Pattern NAME_PATTERN = Pattern.compile("^[A-Za-z\\s]{1,}[\\.]{0,1}[A-Za-z\\s]{0,}$");
+    private static final Pattern PHONE_PATTERN = Pattern.compile("^[7-9][0-9]{9}$");
+//    private static final Pattern PASSWORD_PATTERN = Pattern.compile("^((?=.*[a-zA-Z])?=.*)).{8,20})");
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.register_employee);
-
         employeeData = new EmployeeData();
 
         name = findViewById(R.id.name);
@@ -47,8 +50,8 @@ public class RegisterActivity extends AppCompatActivity {
         code = findViewById(R.id.ecode);
         pass = findViewById(R.id.password);
         phone = findViewById(R.id.phoneNumber);
-        confirmPassword = findViewById(R.id.confirmPassword);
         email = findViewById(R.id.email);
+        cPass = findViewById(R.id.confirmPassword);
         save = findViewById(R.id.save);
 
         c = Calendar.getInstance();
@@ -95,7 +98,7 @@ public class RegisterActivity extends AppCompatActivity {
                     List<EmployeeData> allEmployeeList = MainActivity.employeeDatabase.employeeDAO().getSelectedEmployee(eCode);
 
                     if (allEmployeeList.size() == 0) {
-                        MainActivity.employeeDatabase.employeeDAO().insert(employeeData);
+                        MainActivity.employeeDatabase.employeeDAO().addEmployee(employeeData);
                         Toast.makeText(RegisterActivity.this, R.string.registration_done, Toast.LENGTH_SHORT).show();
                         back();
                     } else {
@@ -139,17 +142,17 @@ public class RegisterActivity extends AppCompatActivity {
 
     private boolean validatePassword() {
         String passwordInput = pass.getText().toString().trim();
-        String confirmPasswordInput = confirmPassword.getText().toString().trim();
+        String confirmPasswordInput = cPass.getText().toString().trim();
 
         if (passwordInput.isEmpty()) {
             pass.setError("Field can't be empty");
             return false;
-        } else if (passwordInput.length() < 8) {
+        } else if (passwordInput.length() < 4) {
             pass.setError("Password too short");
             return false;
         }else if (!passwordInput.equals(confirmPasswordInput)) {
-            confirmPassword.setError("Password do not match");
-                return false;
+            cPass.setError("Password must contain at least one special Character and Number");
+            return false;
 //        } else if (!PASSWORD_PATTERN.matcher(passwordInput).matches()) {
 //            pass.setError("Password too weak");
 //            return false;

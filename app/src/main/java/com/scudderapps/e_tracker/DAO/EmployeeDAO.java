@@ -15,7 +15,7 @@ import androidx.room.Update;
 public interface EmployeeDAO {
 
     @Insert
-    void insert(EmployeeData employeeData);
+    void addEmployee(EmployeeData employeeData);
 
     @Update
     void update(EmployeeData employeeData);

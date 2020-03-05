@@ -227,7 +227,7 @@ public class UpdateActivity extends AppCompatActivity {
         if (passwordInput.isEmpty()) {
             empPassword.setError("Field can't be empty");
             return false;
-        } else if (passwordInput.length() < 8) {
+        } else if (passwordInput.length() < 4) {
             empPassword.setError("Password too short");
             return false;
 //        } else if (!PASSWORD_PATTERN.matcher(passwordInput).matches()) {

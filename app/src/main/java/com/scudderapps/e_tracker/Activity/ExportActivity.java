@@ -104,7 +104,7 @@ public class ExportActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String code = empCode.getText().toString();
-                attendanceDatabase.attendanceDAO().deleteALl(code);
+                attendanceDatabase.attendanceDAO().deleteSelected(code);
                 createSnackbar(v, "All records deleted");
                 back();
             }
@@ -172,7 +172,7 @@ public class ExportActivity extends AppCompatActivity {
             wbSettings.setLocale(new Locale("en", "EN"));
             WritableWorkbook workbook;
 
-            Cursor cursor = attendanceDatabase.attendanceDAO().totalTimeCursor(CODE);
+            Cursor cursor = attendanceDatabase.attendanceDAO().currentAttendanceData(CODE);
 
             File sdCard = Environment.getExternalStorageDirectory();
             File directory = new File(sdCard.getAbsolutePath() + "/ETracker/Attendance Data");
