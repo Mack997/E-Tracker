@@ -3,7 +3,6 @@ package com.scudderapps.e_tracker.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -12,7 +11,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.material.snackbar.Snackbar;
 import com.scudderapps.e_tracker.DATA.AttendanceDetails;
 import com.scudderapps.e_tracker.DATA.EmployeeData;
 import com.scudderapps.e_tracker.Database.AttendanceDatabase;
@@ -74,33 +72,23 @@ public class AttendanceActivity extends AppCompatActivity {
                 imm.hideSoftInputFromWindow(searchEmployee.getWindowToken(), InputMethodManager.RESULT_UNCHANGED_SHOWN);
 
                 if (validateFields() && validatePass()) {
-
                     List<EmployeeData> allEmployeeList = MainActivity.employeeDatabase.employeeDAO().allEmployee();
-
                     for (EmployeeData allData : allEmployeeList) {
                         final String allCode = allData.getCode();
                         String allPass = allData.getPassword();
 
                         if (ECode.equals(allCode) && EPass.equals(allPass)) {
                             List<EmployeeData> employeeDataList = MainActivity.employeeDatabase.employeeDAO().searchEmployee(ECode, EPass);
-
                             for (EmployeeData data : employeeDataList) {
-
                                 String name = data.getName();
                                 code = data.getCode();
                                 String dob = data.getDate();
-
                                 nameView.setText(name);
                                 codeView.setText(code);
                                 dobView.setText(dob);
 
                                 List<AttendanceDetails> statusDetails = attendanceDatabase.attendanceDAO().latestEntry(ECode);
-
-                                List<AttendanceDetails> empCode = attendanceDatabase.attendanceDAO().empCode(ECode);
-
-                                String l = String.valueOf(empCode.size());
-                                Log.v("length", l);
-
+                                List<AttendanceDetails> empCode = attendanceDatabase.attendanceDAO().dataSelected(ECode);
                                 if (empCode.size() == 0) {
                                     CheckInBtn.setEnabled(true);
                                     CheckOutBtn.setEnabled(false);
@@ -109,7 +97,6 @@ public class AttendanceActivity extends AppCompatActivity {
                                 } else {
                                     for (AttendanceDetails statusString : statusDetails) {
                                         String status = statusString.getStatus();
-                                        String size = String.valueOf(statusDetails.size());
                                         if (status.equals("Checked In")) {
                                             CheckInBtn.setEnabled(false);
                                             CheckOutBtn.setEnabled(true);

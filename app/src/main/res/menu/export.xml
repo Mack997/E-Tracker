@@ -2,9 +2,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/exportCurrentEmpRecord"
-        android:title="@string/export_current_employee_record" />
-    <item
         android:id="@+id/exportAllEmpDetails"
         android:title="@string/export_all_employee_details" />
     <item

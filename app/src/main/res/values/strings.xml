@@ -26,10 +26,9 @@
     <string name="get_attendance">Get Attendance</string>
     <string name="add_fingerprint">Add Fingerprint</string>
     <string name="scan_fingerprint">Scan Fingerprint</string>
-    <string name="export_all_employee_details">Export All Employee Details</string>
-    <string name="export_current_employee_record">Export Current Employee Record</string>
+    <string name="export_all_employee_details">Export Employee Details</string>
     <string name="delete_all_records">Delete All Records</string>
-    <string name="export_all_attendance_record">Export All Attendance Record</string>
+    <string name="export_all_attendance_record">Export Attendance Record</string>
     <string name="pass_error">Please enter Password</string>
     <string name="empty_field_error">Field can\'t be empty</string>
     <string name="export_msg">File Exported to the device</string>

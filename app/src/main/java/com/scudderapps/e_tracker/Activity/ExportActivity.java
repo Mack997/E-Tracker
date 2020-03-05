@@ -74,11 +74,11 @@ public class ExportActivity extends AppCompatActivity {
             public void onClick(final View v) {
 
                 String code = empCode.getText().toString();
-                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(attendanceBtn.getWindowToken(), InputMethodManager.RESULT_UNCHANGED_SHOWN);
                 if (validateFields()) {
                     linearLayout.setVisibility(View.VISIBLE);
-                    List<AttendanceDetails> attendanceDetailsList = attendanceDatabase.attendanceDAO().employeeSearched(code);
+                    List<AttendanceDetails> attendanceDetailsList = attendanceDatabase.attendanceDAO().dataSelected(code);
                     if (!attendanceDetailsList.isEmpty()) {
                         deleteAllDataBtn.setEnabled(true);
                         attendanceAdapter = new AttendanceAdapter();
@@ -133,9 +133,6 @@ public class ExportActivity extends AppCompatActivity {
             case R.id.exportAllEmpDetails:
                 exportAllEmployeeData();
                 return true;
-            case R.id.exportCurrentEmpRecord:
-                exportCurrentEmployeeData();
-                return true;
             case R.id.exportAllAttendanceRecord:
                 exportAllAttendanceRecord();
                 return true;
@@ -160,87 +157,6 @@ public class ExportActivity extends AppCompatActivity {
         Intent home = new Intent(ExportActivity.this, MainActivity.class);
         startActivity(home);
         finish();
-    }
-
-    public void exportCurrentEmployeeData() {
-        String CODE = empCode.getText().toString();
-        if (!CODE.isEmpty()) {
-            String currentTime = new SimpleDateFormat(" d MMM yyyy HH:mm:ss", Locale.getDefault()).format(new Date());
-
-            final String fileName = "AttendanceData-" + currentTime + ".xls";
-            WorkbookSettings wbSettings = new WorkbookSettings();
-            wbSettings.setLocale(new Locale("en", "EN"));
-            WritableWorkbook workbook;
-
-            Cursor cursor = attendanceDatabase.attendanceDAO().currentAttendanceData(CODE);
-
-            File sdCard = Environment.getExternalStorageDirectory();
-            File directory = new File(sdCard.getAbsolutePath() + "/ETracker/Attendance Data");
-            if (!directory.isDirectory()) {
-                directory.mkdirs();
-            }
-            File file = new File(directory, fileName);
-
-            try {
-                workbook = Workbook.createWorkbook(file, wbSettings);
-                //Excel sheet name. 0 represents first sheet
-                WritableSheet sheet = workbook.createSheet("Attendance Data", 0);
-
-                try {
-                    sheet.addCell(new Label(0, 0, "Employee Code"));
-                    sheet.addCell(new Label(1, 0, "CheckIn Time"));
-                    sheet.addCell(new Label(2, 0, "CheckOut Time"));
-                    sheet.addCell(new Label(3, 0, "Total Time"));
-//                sheet.addCell(new Label(3, 0, "Total Time"));
-                    if (cursor.moveToFirst()) {
-                        do {
-                            String emp_code = cursor.getString(cursor.getColumnIndex("code"));
-                            String checkIn = cursor.getString(cursor.getColumnIndex("checkin_Time"));
-                            String checkOut = cursor.getString(cursor.getColumnIndex("checkout_Time"));
-                            Date date = null;
-                            Date date2 = null;
-                            Long diffTime = 0L;
-                            Long diffHours = 0L;
-                            Long diffMinutes= 0L;
-                            String diffTotalTime = "";
-                            try {
-                                date = new SimpleDateFormat(getString(R.string.date_format)).parse(checkIn);
-                                date2 = new SimpleDateFormat(getString(R.string.date_format)).parse(checkOut);
-                                diffTime = date2.getTime() - date.getTime();
-                                diffHours = diffTime / (60 * 60 * 1000) % 24;
-                                diffMinutes = diffTime / (60 * 1000) % 60;
-                                diffTotalTime = diffHours.toString() +"hr " +diffMinutes.toString()+"min";
-
-                            } catch (ParseException | NullPointerException e) {
-                                e.printStackTrace();
-                            }
-
-                            int i = cursor.getPosition() + 1;
-                            sheet.addCell(new Label(0, i, emp_code));
-                            sheet.addCell(new Label(1, i, date.toString()));
-                            sheet.addCell(new Label(2, i, date2.toString()));
-                            sheet.addCell(new Label(3, i, diffTotalTime));
-//                        sheet.addCell(new Label(3, i, duration));
-                        } while (cursor.moveToNext());
-                    }
-                    cursor.close();
-                    Toast.makeText(ExportActivity.this, R.string.export_msg, Toast.LENGTH_SHORT).show();
-                    back();
-                } catch (WriteException e) {
-                    e.printStackTrace();
-                }
-                workbook.write();
-                try {
-                    workbook.close();
-                } catch (WriteException e) {
-                    e.printStackTrace();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        } else {
-            Toast.makeText(this, "Please enter the employee code to get the details", Toast.LENGTH_SHORT).show();
-        }
     }
 
     public void exportAllEmployeeData() {
@@ -313,7 +229,7 @@ public class ExportActivity extends AppCompatActivity {
         Cursor cursor = attendanceDatabase.attendanceDAO().allAttendanceData();
 
         File sdCard = Environment.getExternalStorageDirectory();
-        File directory = new File(sdCard.getAbsolutePath() + "/ETracker/All Attendance Data");
+        File directory = new File(sdCard.getAbsolutePath() + "/ETracker/Attendance Data");
         if (!directory.isDirectory()) {
             directory.mkdirs();
         }
@@ -337,7 +253,7 @@ public class ExportActivity extends AppCompatActivity {
                         System.out.print(status);
                         Date date = null;
                         try {
-                            date = new SimpleDateFormat(getString(R.string.date_format)).parse(checkIn);
+                            date = new SimpleDateFormat(getString(R.string.date_format), Locale.getDefault()).parse(checkIn);
                         } catch (ParseException e) {
                             e.printStackTrace();
                         }

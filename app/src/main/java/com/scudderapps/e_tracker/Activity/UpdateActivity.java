@@ -32,7 +32,7 @@ public class UpdateActivity extends AppCompatActivity {
 
     private static final Pattern NAME_PATTERN = Pattern.compile("^[A-Za-z\\s]{1,}[\\.]{0,1}[A-Za-z\\s]{0,}$");
     private static final Pattern PHONE_PATTERN = Pattern.compile("^[7-9][0-9]{9}$");
-    private static final Pattern PASSWORD_PATTERN = Pattern.compile("^((?=.*[a-zA-Z]).{8,20})");
+    private static final Pattern PASSWORD_PATTERN = Pattern.compile("^((?=.*[a-zA-Z]]).{4})");
 
     TextInputEditText searchEmpCode, empName, empPhone, empEmail, empPassword, empConfirmPassword;
     TextView empDob;

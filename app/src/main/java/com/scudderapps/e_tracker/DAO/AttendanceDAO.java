@@ -24,10 +24,7 @@ public interface AttendanceDAO {
     void deleteSelected(String code);
 
     @Query("SELECT * FROM attendance_details WHERE code = :code")
-    List<AttendanceDetails> employeeSearched(String code);
-
-    @Query("SELECT * FROM attendance_details WHERE code = :code")
-    List<AttendanceDetails> empCode(String code);
+    List<AttendanceDetails> dataSelected(String code);
 
     @Query("SELECT * , MAX(createdAt)  FROM attendance_details WHERE code = :code")
     List<AttendanceDetails> latestEntry(String code);
