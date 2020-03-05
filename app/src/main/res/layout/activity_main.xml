@@ -6,29 +6,14 @@
     android:orientation="vertical"
     tools:context=".Activity.MainActivity">
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="20dp"
-        android:src="@drawable/icon" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:fontFamily="sans-serif-thin"
-        android:text="@string/app_name"
-        android:textAlignment="center"
-        android:textColor="@android:color/black"
-        android:textSize="36sp"
-        android:textStyle="bold" />
-
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="60dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="5dp"
+        android:weightSum="2"
         android:orientation="horizontal">
 
         <Button
@@ -36,16 +21,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_margin="20dp"
-            android:background="@drawable/add_user" />
+            android:layout_weight="1"
+            android:background="@drawable/adduser" />
 
         <Button
             android:id="@+id/attendance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:layout_gravity="center"
-            android:layout_margin="20dp"
-            android:background="@drawable/mark_entry" />
+            android:background="@drawable/attendance" />
 
     </LinearLayout>
 
@@ -53,22 +38,24 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:weightSum="2"
+        android:layout_margin="5dp"
         android:orientation="horizontal">
 
         <Button
             android:id="@+id/edit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:layout_gravity="center"
-            android:layout_margin="20dp"
-            android:background="@drawable/edit" />
+            android:background="@drawable/editemp" />
 
         <Button
             android:id="@+id/export"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_margin="20dp"
+            android:layout_weight="1"
             android:background="@drawable/export" />
 
     </LinearLayout>

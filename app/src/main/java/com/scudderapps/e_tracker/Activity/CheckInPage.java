@@ -97,8 +97,8 @@ public class CheckInPage extends AppCompatActivity {
                                 if (empCode.size() == 0) {
                                     CheckInBtn.setEnabled(true);
                                     CheckOutBtn.setEnabled(false);
-                                    CheckInBtn.setBackgroundColor(Color.GREEN);
-                                    CheckOutBtn.setBackgroundColor(Color.GRAY);
+                                    CheckInBtn.setBackground(getResources().getDrawable(R.drawable.btn_bg));
+                                    CheckOutBtn.setBackground(getResources().getDrawable(R.drawable.list_bg));
                                 } else {
                                     for (AttendanceDetails statusString : statusDetails) {
                                         String status = statusString.getStatus();
@@ -107,13 +107,13 @@ public class CheckInPage extends AppCompatActivity {
                                         if (status.equals("Checked In")) {
                                             CheckInBtn.setEnabled(false);
                                             CheckOutBtn.setEnabled(true);
-                                            CheckOutBtn.setBackgroundColor(Color.RED);
-                                            CheckInBtn.setBackgroundColor(Color.GRAY);
+                                            CheckOutBtn.setBackground(getResources().getDrawable(R.drawable.btn_bg));
+                                            CheckInBtn.setBackground(getResources().getDrawable(R.drawable.list_bg));
                                         } else {
                                             CheckInBtn.setEnabled(true);
                                             CheckOutBtn.setEnabled(false);
-                                            CheckInBtn.setBackgroundColor(Color.GREEN);
-                                            CheckOutBtn.setBackgroundColor(Color.GRAY);
+                                            CheckInBtn.setBackground(getResources().getDrawable(R.drawable.btn_bg));
+                                            CheckOutBtn.setBackground(getResources().getDrawable(R.drawable.list_bg));
                                         }
                                     }
                                 }

@@ -37,8 +37,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:background="@android:color/holo_green_light"
-        android:text="@string/search_employee" />
+        android:background="@drawable/btn_bg"
+        android:text="@string/search_employee"
+        android:textColor="@android:color/white"/>
 
     <Button
         android:id="@+id/fingerprint"
@@ -53,7 +54,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:background="@drawable/background"
+        android:background="@drawable/list_bg"
         android:orientation="horizontal">
 
         <LinearLayout

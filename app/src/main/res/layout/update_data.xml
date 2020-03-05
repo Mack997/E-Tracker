@@ -31,8 +31,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:background="@android:color/holo_green_light"
-            android:text="@string/search_employee" />
+            android:background="@drawable/btn_bg"
+            android:text="@string/search_employee"
+            android:textColor="@android:color/white"/>
     </LinearLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -120,6 +121,15 @@
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
         android:weightSum="2">
+        <Button
+            android:id="@+id/deleteBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/list_bg"
+            android:text="Delete" />
 
         <Button
             android:id="@+id/updateBtn"
@@ -128,18 +138,9 @@
             android:layout_gravity="center"
             android:layout_margin="10dp"
             android:layout_weight="1"
-            android:background="@android:color/holo_green_light"
-            android:text="@string/update" />
-
-        <Button
-            android:id="@+id/deleteBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_margin="10dp"
-            android:layout_weight="1"
-            android:background="@android:color/holo_red_light"
-            android:text="Delete" />
+            android:background="@drawable/btn_bg"
+            android:text="@string/update"
+            android:textColor="@android:color/white"/>
 
     </LinearLayout>
 
