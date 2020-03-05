@@ -129,7 +129,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
                 android:layout_marginStart="4dp"
-                android:hint="@string/date_of_birth"
+                android:hint="@string/dob"
                 android:textColor="@android:color/black"
                 android:textSize="18sp" />
 

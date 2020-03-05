@@ -21,16 +21,16 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
-        app:passwordToggleEnabled="true"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        app:passwordToggleEnabled="true">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/EPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:maxLength="4"
             android:hint="@string/enter_your_password"
-            android:inputType="textPassword" />
+            android:inputType="textPassword"
+            android:maxLength="4" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -41,7 +41,7 @@
         android:layout_marginTop="10dp"
         android:background="@drawable/btn_bg"
         android:text="@string/search_employee"
-        android:textColor="@android:color/white"/>
+        android:textColor="@android:color/white" />
 
     <Button
         android:id="@+id/fingerprint"
@@ -60,66 +60,54 @@
         android:background="@drawable/list_bg"
         android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_gravity="center"
+        <TextView
+            android:id="@+id/searchedCode"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_margin="10dp"
+            android:textSize="18sp"
+            android:textColor="@android:color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/searchedCode"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:textSize="18sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/searchedName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:textSize="18sp"
+            android:textColor="@android:color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/searchedCode" />
 
-            <TextView
-                android:id="@+id/searchedName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:textSize="18sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/searchedCode" />
-
-            <TextView
-                android:id="@+id/searchedDob"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:textSize="18sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/searchedName" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <Button
-                android:id="@+id/checkIn"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:background="@android:color/darker_gray"
-                android:text="@string/check_in" />
-
-
-            <Button
-                android:id="@+id/checkOut"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:background="@android:color/darker_gray"
-                android:text="@string/check_out" />
-
-        </LinearLayout>
+        <TextView
+            android:id="@+id/searchedEmail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:textSize="18sp"
+            android:textColor="@android:color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/searchedName" />
 
     </LinearLayout>
 
+    <Button
+        android:id="@+id/checkIn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="@android:color/darker_gray"
+        android:text="@string/check_in" />
+
+
+    <Button
+        android:id="@+id/checkOut"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@android:color/darker_gray"
+        android:text="@string/check_out" />
 
 
 </LinearLayout>

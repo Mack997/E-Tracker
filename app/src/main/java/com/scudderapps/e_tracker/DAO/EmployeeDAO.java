@@ -20,6 +20,9 @@ public interface EmployeeDAO {
     @Update
     void update(EmployeeData employeeData);
 
+    @Query("delete from employee_data where code = :code")
+    void delete(String code);
+
     @Query("SELECT * FROM employee_data where code = :eCode and password = :ePass")
     List<EmployeeData> searchEmployee(String eCode, String ePass);
 
@@ -29,12 +32,8 @@ public interface EmployeeDAO {
     @Query("SELECT * FROM employee_data")
     Cursor allEmployeeData();
 
-    @Query("SELECT * FROM employee_data where code = :code")
-    Cursor currentEmployeeData(String code);
-
     @Query("SELECT * FROM employee_data Where code = :code")
     List<EmployeeData> getSelectedEmployee(String code);
 
-    @Query("delete from employee_data where code = :code")
-    void delete(String code);
+
 }

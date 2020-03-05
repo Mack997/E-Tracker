@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent registerpage = new Intent(MainActivity.this, RegisterActivity.class);
                 startActivity(registerpage);
+                finish();
             }
         });
 
@@ -54,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent attendancePage = new Intent(MainActivity.this, AttendanceActivity.class);
                 startActivity(attendancePage);
+                finish();
             }
         });
 
@@ -62,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent editPage = new Intent(MainActivity.this, UpdateActivity.class);
                 startActivity(editPage);
+                finish();
             }
         });
 
@@ -70,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent exportPage = new Intent(MainActivity.this, ExportActivity.class);
                 startActivity(exportPage);
+                finish();
             }
         });
     }

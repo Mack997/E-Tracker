@@ -26,13 +26,12 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class UpdateActivity extends AppCompatActivity {
 
-    private static final Pattern NAME_PATTERN = Pattern.compile("^[A-Za-z\\s]{1,}[\\.]{0,1}[A-Za-z\\s]{0,}$");
-    private static final Pattern PHONE_PATTERN = Pattern.compile("^[7-9][0-9]{9}$");
-    private static final Pattern PASSWORD_PATTERN = Pattern.compile("^((?=.*[a-zA-Z]]).{4})");
+    private static final Pattern PHONE_PATTERN = Pattern.compile("^[6-9][0-9]{9}$");
 
     TextInputEditText searchEmpCode, empName, empPhone, empEmail, empPassword, empConfirmPassword;
     TextView empDob;
@@ -65,6 +64,11 @@ public class UpdateActivity extends AppCompatActivity {
         employeeData = new EmployeeData();
         updateBtn.setEnabled(false);
         deleteBtn.setEnabled(false);
+
+        if (getSupportActionBar() != null) {
+            ActionBar actionBar = getSupportActionBar();
+            actionBar.setDisplayHomeAsUpEnabled(false);
+        }
 
         empConfirmPassword.addTextChangedListener(new TextWatcher() {
             @Override
@@ -196,9 +200,6 @@ public class UpdateActivity extends AppCompatActivity {
         if (usernameInput.isEmpty()) {
             empName.setError("Field can't be empty");
             return false;
-        } else if (!NAME_PATTERN.matcher(usernameInput).matches()) {
-            empName.setError("Username not valid");
-            return false;
         } else {
             empName.setError(null);
             return true;
@@ -265,6 +266,12 @@ public class UpdateActivity extends AppCompatActivity {
             empPhone.setError(null);
             return true;
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        back();
+        super.onBackPressed();
     }
 
     public void back() {

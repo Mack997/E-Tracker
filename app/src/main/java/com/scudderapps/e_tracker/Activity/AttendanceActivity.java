@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Locale;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.room.Room;
 
@@ -30,7 +31,7 @@ public class AttendanceActivity extends AppCompatActivity {
     String ECode, EPass;
     EditText eCode, ePass;
     Button CheckInBtn, CheckOutBtn, searchEmployee;
-    TextView nameView, codeView, dobView;
+    TextView nameView, codeView, emailView;
     AttendanceDetails attendanceDetails;
     AttendanceDatabase attendanceDatabase;
     String code;
@@ -47,11 +48,15 @@ public class AttendanceActivity extends AppCompatActivity {
         ePass = findViewById(R.id.EPassword);
         nameView = findViewById(R.id.searchedName);
         codeView = findViewById(R.id.searchedCode);
-        dobView = findViewById(R.id.searchedDob);
-        dataView = findViewById(R.id.dataView);
+        emailView = findViewById(R.id.searchedEmail);
 
         CheckOutBtn.setEnabled(false);
         CheckInBtn.setEnabled(false);
+
+        if (getSupportActionBar() != null) {
+            ActionBar actionBar = getSupportActionBar();
+            actionBar.setDisplayHomeAsUpEnabled(false);
+        }
 
         attendanceDetails = new AttendanceDetails();
         attendanceDatabase = Room.databaseBuilder(getApplicationContext(),
@@ -71,7 +76,7 @@ public class AttendanceActivity extends AppCompatActivity {
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(searchEmployee.getWindowToken(), InputMethodManager.RESULT_UNCHANGED_SHOWN);
 
-                if (validateFields() && validatePass()) {
+                if (validateFields(ECode) && validatePass(EPass)) {
                     List<EmployeeData> allEmployeeList = MainActivity.employeeDatabase.employeeDAO().allEmployee();
                     for (EmployeeData allData : allEmployeeList) {
                         final String allCode = allData.getCode();
@@ -82,10 +87,10 @@ public class AttendanceActivity extends AppCompatActivity {
                             for (EmployeeData data : employeeDataList) {
                                 String name = data.getName();
                                 code = data.getCode();
-                                String dob = data.getDate();
-                                nameView.setText(name);
-                                codeView.setText(code);
-                                dobView.setText(dob);
+                                String email = data.getEmail();
+                                nameView.setText("Name : " + name);
+                                codeView.setText("Code : " + code);
+                                emailView.setText("Email : " + email);
 
                                 List<AttendanceDetails> statusDetails = attendanceDatabase.attendanceDAO().latestEntry(ECode);
                                 List<AttendanceDetails> empCode = attendanceDatabase.attendanceDAO().dataSelected(ECode);
@@ -124,7 +129,6 @@ public class AttendanceActivity extends AppCompatActivity {
                 attendanceDetails.setCode(code);
                 attendanceDetails.setCreatedAt(check_in);
                 attendanceDetails.setStatus(status);
-
                 attendanceDatabase.attendanceDAO().addAttendance(attendanceDetails);
                 Toast.makeText(AttendanceActivity.this, "Checked In", Toast.LENGTH_SHORT).show();
                 back();
@@ -138,7 +142,6 @@ public class AttendanceActivity extends AppCompatActivity {
                 attendanceDetails.setCode(code);
                 attendanceDetails.setCreatedAt(check_in);
                 attendanceDetails.setStatus(status);
-
                 attendanceDatabase.attendanceDAO().addAttendance(attendanceDetails);
                 Toast.makeText(AttendanceActivity.this, "Checked Out", Toast.LENGTH_SHORT).show();
                 back();
@@ -146,9 +149,7 @@ public class AttendanceActivity extends AppCompatActivity {
         });
     }
 
-    private boolean validateFields() {
-        String Code = eCode.getText().toString().trim();
-
+    private boolean validateFields(String Code) {
         if (Code.isEmpty()) {
             eCode.setError(getString(R.string.empty_field_error));
             return false;
@@ -158,8 +159,7 @@ public class AttendanceActivity extends AppCompatActivity {
         }
     }
 
-    private boolean validatePass() {
-        String Pass = ePass.getText().toString().trim();
+    private boolean validatePass(String Pass) {
         if (Pass.isEmpty()) {
             ePass.setError(getString(R.string.pass_error));
             return false;
@@ -167,6 +167,12 @@ public class AttendanceActivity extends AppCompatActivity {
             ePass.setError(null);
             return true;
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        back();
+        super.onBackPressed();
     }
 
     public void back() {

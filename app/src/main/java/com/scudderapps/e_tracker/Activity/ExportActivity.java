@@ -30,6 +30,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -63,6 +64,12 @@ public class ExportActivity extends AppCompatActivity {
         deleteAllDataBtn.setEnabled(false);
         linearLayout = findViewById(R.id.linearLayout3);
         linearLayout.setVisibility(View.INVISIBLE);
+        dataView.setVisibility(View.INVISIBLE);
+
+        if (getSupportActionBar() != null) {
+            ActionBar actionBar = getSupportActionBar();
+            actionBar.setDisplayHomeAsUpEnabled(false);
+        }
 
         attendanceDatabase = Room.databaseBuilder(getApplicationContext(),
                 AttendanceDatabase.class, "AttendanceData")
@@ -78,6 +85,7 @@ public class ExportActivity extends AppCompatActivity {
                 imm.hideSoftInputFromWindow(attendanceBtn.getWindowToken(), InputMethodManager.RESULT_UNCHANGED_SHOWN);
                 if (validateFields()) {
                     linearLayout.setVisibility(View.VISIBLE);
+                    dataView.setVisibility(View.VISIBLE);
                     List<AttendanceDetails> attendanceDetailsList = attendanceDatabase.attendanceDAO().dataSelected(code);
                     if (!attendanceDetailsList.isEmpty()) {
                         deleteAllDataBtn.setEnabled(true);
@@ -93,6 +101,7 @@ public class ExportActivity extends AppCompatActivity {
                             }
                         });
                     } else {
+                        dataView.setVisibility(View.INVISIBLE);
                         linearLayout.setVisibility(View.INVISIBLE);
                         createSnackbar(v, "No Records Founds");
                     }
@@ -105,7 +114,7 @@ public class ExportActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String code = empCode.getText().toString();
                 attendanceDatabase.attendanceDAO().deleteSelected(code);
-                createSnackbar(v, "All records deleted");
+                Toast.makeText(ExportActivity.this, "All records deleted", Toast.LENGTH_SHORT).show();
                 back();
             }
         });
@@ -153,12 +162,17 @@ public class ExportActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        back();
+        super.onBackPressed();
+    }
+
     public void back() {
         Intent home = new Intent(ExportActivity.this, MainActivity.class);
         startActivity(home);
         finish();
     }
-
     public void exportAllEmployeeData() {
         String currentTime = new SimpleDateFormat(" d MMM yyyy HH:mm:ss", Locale.getDefault()).format(new Date());
 

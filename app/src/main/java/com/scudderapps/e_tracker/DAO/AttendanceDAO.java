@@ -29,9 +29,6 @@ public interface AttendanceDAO {
     @Query("SELECT * , MAX(createdAt)  FROM attendance_details WHERE code = :code")
     List<AttendanceDetails> latestEntry(String code);
 
-    @Query("SELECT * FROM attendance_details where code = :code")
-    Cursor currentAttendanceData(String code);
-
     @Query("SELECT * FROM attendance_details")
     Cursor allAttendanceData();
 }

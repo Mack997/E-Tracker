@@ -19,6 +19,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class RegisterActivity extends AppCompatActivity {
@@ -30,14 +31,11 @@ public class RegisterActivity extends AppCompatActivity {
     private TextInputEditText name, code, pass, phone, email, cPass;
     private TextView dob;
     private Button save;
-    private String eName, ePass, eEmail, eCode, ePhone, eDob;
+    private String eName, ePass, eEmail, eCode, ePhone, eDob,eCPass;
 
     private EmployeeData employeeData;
 
-    private static final Pattern NAME_PATTERN = Pattern.compile("^[A-Za-z\\s]{1,}[\\.]{0,1}[A-Za-z\\s]{0,}$");
     private static final Pattern PHONE_PATTERN = Pattern.compile("^[7-9][0-9]{9}$");
-//    private static final Pattern PASSWORD_PATTERN = Pattern.compile("^((?=.*[a-zA-Z])?=.*)).{8,20})");
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +51,11 @@ public class RegisterActivity extends AppCompatActivity {
         email = findViewById(R.id.email);
         cPass = findViewById(R.id.confirmPassword);
         save = findViewById(R.id.save);
+
+        if (getSupportActionBar() != null) {
+            ActionBar actionBar = getSupportActionBar();
+            actionBar.setDisplayHomeAsUpEnabled(false);
+        }
 
         c = Calendar.getInstance();
         month = c.get(Calendar.MONTH);
@@ -79,14 +82,15 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                eCode = code.getText().toString();
-                eName = name.getText().toString();
-                ePhone = phone.getText().toString();
-                eEmail = email.getText().toString();
-                ePass = pass.getText().toString();
-                eDob = dob.getText().toString();
+                eCode = code.getText().toString().trim();
+                eName = name.getText().toString().trim();
+                ePhone = phone.getText().toString().trim();
+                eEmail = email.getText().toString().trim();
+                ePass = pass.getText().toString().trim();
+                eDob = dob.getText().toString().trim();
+                eCPass = cPass.getText().toString().trim();
 
-                if (validateUsername() && validatePhoneNumber() && validateEmail() && validatePassword() && validateDatOfBirth()) {
+                if (validateUsername(eName) && validatePhoneNumber(ePhone) && validateEmail(eEmail) && validatePassword(ePass, eCPass) && validateDatOfBirth(eDob)) {
 
                     employeeData.setCode(eCode);
                     employeeData.setName(eName);
@@ -110,14 +114,9 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
-    private boolean validateUsername() {
-        String usernameInput = name.getText().toString().trim();
-
+    private boolean validateUsername(String usernameInput) {
         if (usernameInput.isEmpty()) {
             name.setError("Field can't be empty");
-            return false;
-        } else if (!NAME_PATTERN.matcher(usernameInput).matches()) {
-            name.setError("Username not valid");
             return false;
         } else {
             name.setError(null);
@@ -125,9 +124,7 @@ public class RegisterActivity extends AppCompatActivity {
         }
     }
 
-    private boolean validateEmail() {
-        String emailInput = email.getText().toString().trim();
-
+    private boolean validateEmail(String emailInput) {
         if (emailInput.isEmpty()) {
             email.setError("Field can't be empty");
             return false;
@@ -140,9 +137,7 @@ public class RegisterActivity extends AppCompatActivity {
         }
     }
 
-    private boolean validatePassword() {
-        String passwordInput = pass.getText().toString().trim();
-        String confirmPasswordInput = cPass.getText().toString().trim();
+    private boolean validatePassword(String passwordInput, String confirmPasswordInput) {
 
         if (passwordInput.isEmpty()) {
             pass.setError("Field can't be empty");
@@ -151,7 +146,7 @@ public class RegisterActivity extends AppCompatActivity {
             pass.setError("Password too short");
             return false;
         }else if (!passwordInput.equals(confirmPasswordInput)) {
-            cPass.setError("Password must contain at least one special Character and Number");
+            cPass.setError("Passwords do not match");
             return false;
 //        } else if (!PASSWORD_PATTERN.matcher(passwordInput).matches()) {
 //            pass.setError("Password too weak");
@@ -162,8 +157,7 @@ public class RegisterActivity extends AppCompatActivity {
         }
     }
 
-    private boolean validateDatOfBirth() {
-        String dobInput = dob.getText().toString().trim();
+    private boolean validateDatOfBirth(String dobInput) {
         if (dobInput.isEmpty()) {
             dob.setError("Field can't be empty");
             return false;
@@ -173,8 +167,7 @@ public class RegisterActivity extends AppCompatActivity {
         }
     }
 
-    private boolean validatePhoneNumber() {
-        String phoneInput = phone.getText().toString().trim();
+    private boolean validatePhoneNumber(String phoneInput) {
         if (phoneInput.isEmpty()) {
             phone.setError("Field can't be empty");
             return false;
@@ -185,6 +178,12 @@ public class RegisterActivity extends AppCompatActivity {
             phone.setError(null);
             return true;
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        back();
+        super.onBackPressed();
     }
 
     public void back() {
