@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent registerpage = new Intent(MainActivity.this, RegisterEmployee.class);
+                Intent registerpage = new Intent(MainActivity.this, RegisterActivity.class);
                 startActivity(registerpage);
             }
         });
@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
         attendance.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent attendancePage = new Intent(MainActivity.this, CheckInPage.class);
+                Intent attendancePage = new Intent(MainActivity.this, AttendanceActivity.class);
                 startActivity(attendancePage);
             }
         });
@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
         edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent editPage = new Intent(MainActivity.this, UpdateData.class);
+                Intent editPage = new Intent(MainActivity.this, UpdateActivity.class);
                 startActivity(editPage);
             }
         });
@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
         export.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent exportPage = new Intent(MainActivity.this, AttendanceData.class);
+                Intent exportPage = new Intent(MainActivity.this, ExportActivity.class);
                 startActivity(exportPage);
             }
         });

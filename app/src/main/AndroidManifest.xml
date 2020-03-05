@@ -23,19 +23,19 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Activity.RegisterEmployee"
+            android:name=".Activity.RegisterActivity"
             android:parentActivityName=".Activity.MainActivity"
             tools:ignore="InnerclassSeparator" />
         <activity
-            android:name=".Activity.CheckInPage"
+            android:name=".Activity.AttendanceActivity"
             android:parentActivityName=".Activity.MainActivity"
             tools:ignore="InnerclassSeparator" />
         <activity
-            android:name=".Activity.UpdateData"
+            android:name=".Activity.UpdateActivity"
             android:parentActivityName=".Activity.MainActivity"
             tools:ignore="InnerclassSeparator" />
         <activity
-            android:name=".Activity.AttendanceData"
+            android:name=".Activity.ExportActivity"
             android:parentActivityName=".Activity.MainActivity"
             tools:ignore="InnerclassSeparator" />
     </application>

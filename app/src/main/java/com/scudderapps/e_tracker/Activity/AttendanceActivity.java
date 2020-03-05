@@ -2,13 +2,12 @@ package com.scudderapps.e_tracker.Activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,7 +25,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.room.Room;
 
-public class CheckInPage extends AppCompatActivity {
+public class AttendanceActivity extends AppCompatActivity {
 
     String empCode, empPass;
     EditText editCode, editPass;
@@ -36,6 +35,7 @@ public class CheckInPage extends AppCompatActivity {
     AttendanceDetails attendanceDetails;
     AttendanceDatabase attendanceDatabase;
     String fetchedEmpCode;
+    LinearLayout dataView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -52,6 +52,8 @@ public class CheckInPage extends AppCompatActivity {
 
         CheckOutBtn.setEnabled(false);
         CheckInBtn.setEnabled(false);
+        dataView = findViewById(R.id.dataView);
+        dataView.setVisibility(View.INVISIBLE);
 
         attendanceDetails = new AttendanceDetails();
         attendanceDatabase = Room.databaseBuilder(getApplicationContext(),
@@ -66,18 +68,17 @@ public class CheckInPage extends AppCompatActivity {
             public void onClick(View v) {
                 empCode = editCode.getText().toString();
                 empPass = editPass.getText().toString();
-                InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(searchEmployeeBtn.getWindowToken(), InputMethodManager.RESULT_UNCHANGED_SHOWN);
 
                 if (validateFields() && validatePass()) {
-
                     List<EmployeeData> allEmployeeList = MainActivity.employeeDatabase.employeeDAO().allEmployee();
                     for (EmployeeData allEmployeeData : allEmployeeList) {
                         final String allEmpCode = allEmployeeData.getCode();
                         String allEmpPass = allEmployeeData.getPassword();
 
                         if (empCode.equals(allEmpCode) && empPass.equals(allEmpPass)) {
-
+                            dataView.setVisibility(View.VISIBLE);
                             List<EmployeeData> fetchedEmployeeDataList = MainActivity.employeeDatabase.employeeDAO().searchEmployee(empCode, empPass);
 
                             for (EmployeeData data : fetchedEmployeeDataList) {
@@ -92,7 +93,7 @@ public class CheckInPage extends AppCompatActivity {
 
                                 List<AttendanceDetails> statusDetails = attendanceDatabase.attendanceDAO().latestEntry(empCode);
 
-                                List<AttendanceDetails> empCode = attendanceDatabase.attendanceDAO().employeeSearched(CheckInPage.this.empCode);
+                                List<AttendanceDetails> empCode = attendanceDatabase.attendanceDAO().employeeSearched(AttendanceActivity.this.empCode);
 
                                 if (empCode.size() == 0) {
                                     CheckInBtn.setEnabled(true);
@@ -103,7 +104,6 @@ public class CheckInPage extends AppCompatActivity {
                                     for (AttendanceDetails statusString : statusDetails) {
                                         String status = statusString.getStatus();
                                         String size = String.valueOf(statusDetails.size());
-                                        Log.v("max", size);
                                         if (status.equals("Checked In")) {
                                             CheckInBtn.setEnabled(false);
                                             CheckOutBtn.setEnabled(true);
@@ -119,7 +119,8 @@ public class CheckInPage extends AppCompatActivity {
                                 }
                             }
                         } else {
-                            Toast.makeText(CheckInPage.this, "Please enter the correct details", Toast.LENGTH_SHORT).show();
+                            dataView.setVisibility(View.INVISIBLE);
+                            Toast.makeText(AttendanceActivity.this, "Please enter the correct details", Toast.LENGTH_SHORT).show();
                         }
                     }
                 }
@@ -135,7 +136,7 @@ public class CheckInPage extends AppCompatActivity {
                 attendanceDetails.setStatus(status);
 
                 attendanceDatabase.attendanceDAO().insert(attendanceDetails);
-                Toast.makeText(CheckInPage.this, "Checked In", Toast.LENGTH_SHORT).show();
+                Toast.makeText(AttendanceActivity.this, "Checked In", Toast.LENGTH_SHORT).show();
                 back();
             }
         });
@@ -149,7 +150,7 @@ public class CheckInPage extends AppCompatActivity {
                 attendanceDetails.setStatus(status);
 
                 attendanceDatabase.attendanceDAO().insert(attendanceDetails);
-                Toast.makeText(CheckInPage.this, "Checked Out", Toast.LENGTH_SHORT).show();
+                Toast.makeText(AttendanceActivity.this, "Checked Out", Toast.LENGTH_SHORT).show();
                 back();
             }
         });
@@ -179,7 +180,7 @@ public class CheckInPage extends AppCompatActivity {
     }
 
     public void back() {
-        Intent home = new Intent(CheckInPage.this, MainActivity.class);
+        Intent home = new Intent(AttendanceActivity.this, MainActivity.class);
         startActivity(home);
         finish();
     }

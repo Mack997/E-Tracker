@@ -36,13 +36,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 import jxl.Workbook;
 import jxl.WorkbookSettings;
-import jxl.write.BoldStyle;
 import jxl.write.Label;
 import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
 import jxl.write.WriteException;
 
-public class AttendanceData extends AppCompatActivity {
+public class ExportActivity extends AppCompatActivity {
 
     TextInputEditText empCode;
     Button attendanceBtn, deleteAllDataBtn;
@@ -158,7 +157,7 @@ public class AttendanceData extends AppCompatActivity {
     }
 
     public void back() {
-        Intent home = new Intent(AttendanceData.this, MainActivity.class);
+        Intent home = new Intent(ExportActivity.this, MainActivity.class);
         startActivity(home);
         finish();
     }
@@ -219,7 +218,7 @@ public class AttendanceData extends AppCompatActivity {
                         } while (cursor.moveToNext());
                     }
                     cursor.close();
-                    Toast.makeText(AttendanceData.this, R.string.export_msg, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ExportActivity.this, R.string.export_msg, Toast.LENGTH_SHORT).show();
                     back();
                 } catch (WriteException e) {
                     e.printStackTrace();
@@ -281,7 +280,7 @@ public class AttendanceData extends AppCompatActivity {
                     } while (cursor.moveToNext());
                 }
                 cursor.close();
-                Toast.makeText(AttendanceData.this, R.string.export_msg, Toast.LENGTH_SHORT).show();
+                Toast.makeText(ExportActivity.this, R.string.export_msg, Toast.LENGTH_SHORT).show();
                 back();
             } catch (WriteException e) {
                 e.printStackTrace();
@@ -344,7 +343,7 @@ public class AttendanceData extends AppCompatActivity {
                     } while (cursor.moveToNext());
                 }
                 cursor.close();
-                Toast.makeText(AttendanceData.this, R.string.export_msg, Toast.LENGTH_SHORT).show();
+                Toast.makeText(ExportActivity.this, R.string.export_msg, Toast.LENGTH_SHORT).show();
                 back();
             } catch (WriteException e) {
                 e.printStackTrace();

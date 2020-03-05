@@ -21,7 +21,7 @@ import java.util.regex.Pattern;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class RegisterEmployee extends AppCompatActivity {
+public class RegisterActivity extends AppCompatActivity {
 
     private static final Pattern NAME_PATTERN = Pattern.compile("^[A-Za-z\\s]{1,}[\\.]{0,1}[A-Za-z\\s]{0,}$");
     private static final Pattern PHONE_PATTERN = Pattern.compile("^[7-9][0-9]{9}$");
@@ -59,12 +59,12 @@ public class RegisterEmployee extends AppCompatActivity {
         dob.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DatePickerDialog datePickerDialog = new DatePickerDialog(RegisterEmployee.this, new DatePickerDialog.OnDateSetListener() {
+                DatePickerDialog datePickerDialog = new DatePickerDialog(RegisterActivity.this, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                         c.set(year, monthOfYear, dayOfMonth);
-                        RegisterEmployee.this.eDob = dateFormat.format(c.getTime());
-                        dob.setText(RegisterEmployee.this.eDob);
+                        RegisterActivity.this.eDob = dateFormat.format(c.getTime());
+                        dob.setText(RegisterActivity.this.eDob);
                     }
                 }, year, month, day);
                 datePickerDialog.show();
@@ -95,11 +95,11 @@ public class RegisterEmployee extends AppCompatActivity {
 
                     if (allEmployeeList.size() == 0) {
                         MainActivity.employeeDatabase.employeeDAO().insert(employeeData);
-                        Toast.makeText(RegisterEmployee.this, R.string.registration_done, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(RegisterActivity.this, R.string.registration_done, Toast.LENGTH_SHORT).show();
                         back();
                     } else {
                         code.setError("Employee code already present");
-                        Toast.makeText(RegisterEmployee.this, R.string.registration_error, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(RegisterActivity.this, R.string.registration_error, Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -180,7 +180,7 @@ public class RegisterEmployee extends AppCompatActivity {
     }
 
     public void back() {
-        Intent home = new Intent(RegisterEmployee.this, MainActivity.class);
+        Intent home = new Intent(RegisterActivity.this, MainActivity.class);
         startActivity(home);
         finish();
     }

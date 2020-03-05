@@ -34,5 +34,6 @@
     <string name="empty_field_error">Field can\'t be empty</string>
     <string name="export_msg">File Exported to the device</string>
     <string name="date_format">yyMMddHHmmss</string>
+    <string name="confirm_password">Confirm Password</string>
 
 </resources>
