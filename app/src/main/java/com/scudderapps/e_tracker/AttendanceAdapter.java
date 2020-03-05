@@ -14,10 +14,12 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView.ViewHolder;
 
 public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.AttendanceHolder> {
 
     private List<AttendanceDetails> attendanceDetails;
+    private OnItemClickListener listener;
 
     @NonNull
     @Override
@@ -57,15 +59,37 @@ public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.At
         return attendanceDetails.get(position);
     }
 
-    public class AttendanceHolder extends RecyclerView.ViewHolder {
+    public class AttendanceHolder extends ViewHolder {
 
         TextView status, time;
 
-        public AttendanceHolder(@NonNull View itemView) {
+        public AttendanceHolder(@NonNull final View itemView) {
             super(itemView);
             status = itemView.findViewById(R.id.statusView);
             time = itemView.findViewById(R.id.dateView);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = getAdapterPosition();
+                    if (listener != null && position != RecyclerView.NO_POSITION) {
+                        listener.onItemClick(attendanceDetails.get(position), position);
+                        attendanceDetails.remove(position);
+                        notifyItemRemoved(position);
+                        notifyItemRangeChanged(position, attendanceDetails.size());
+                        itemView.setVisibility(View.GONE);
+                    }
+                }
+            });
         }
+
     }
 
+    public interface OnItemClickListener {
+        void onItemClick(AttendanceDetails attendanceDetails, int position);
+    }
+
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.listener = listener;
+    }
 }

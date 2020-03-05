@@ -8,7 +8,6 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.google.android.material.textfield.TextInputEditText;
 import com.scudderapps.e_tracker.DATA.EmployeeData;
 import com.scudderapps.e_tracker.R;
@@ -16,6 +15,8 @@ import com.scudderapps.e_tracker.R;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
+import android.util.Patterns;
+import java.util.regex.Pattern;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -32,6 +33,11 @@ public class RegisterEmployee extends AppCompatActivity {
 
     private EmployeeData employeeData;
 
+    private static final Pattern NAME_PATTERN = Pattern.compile("^[A-Za-z\\s]{1,}[\\.]{0,1}[A-Za-z\\s]{0,}$");
+
+    private static final Pattern PHONE_PATTERN = Pattern.compile("^[7-9][0-9]{9}$");
+
+    private static final Pattern PASSWORD_PATTERN = Pattern.compile("^((?=.*[a-zA-Z]).{8,20})");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,34 +79,109 @@ public class RegisterEmployee extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                eName = name.getText().toString();
-                ePass = pass.getText().toString();
-                eEmail = email.getText().toString();
                 eCode = code.getText().toString();
+                eName = name.getText().toString();
                 ePhone = phone.getText().toString();
+                eEmail = email.getText().toString();
+                ePass = pass.getText().toString();
                 eDob = dob.getText().toString();
 
-                employeeData.setName(eName);
-                employeeData.setEmail(eEmail);
-                employeeData.setCode(eCode);
-                employeeData.setPassword(ePass);
-                employeeData.setPhone(ePhone);
-                employeeData.setDate(eDob);
+                if (validateUsername() && validatePhoneNumber() && validateEmail() && validatePassword() && validateDatOfBirth()) {
 
-                List<EmployeeData> allEmployeeList = MainActivity.employeeDatabase.employeeDAO().Employee(eCode);
+                    employeeData.setCode(eCode);
+                    employeeData.setName(eName);
+                    employeeData.setPhone(ePhone);
+                    employeeData.setEmail(eEmail);
+                    employeeData.setPassword(ePass);
+                    employeeData.setDate(eDob);
 
-                if (allEmployeeList.size() == 0) {
-                    MainActivity.employeeDatabase.employeeDAO().addEmployee(employeeData);
-                    Toast.makeText(RegisterEmployee.this, R.string.registration_done, Toast.LENGTH_SHORT).show();
-                    back();
-                } else {
-                    code.setError("Employee code already present");
-                    Toast.makeText(RegisterEmployee.this, R.string.registration_error, Toast.LENGTH_SHORT).show();
+                    List<EmployeeData> allEmployeeList = MainActivity.employeeDatabase.employeeDAO().Employee(eCode);
+
+                    if (allEmployeeList.size() == 0) {
+                        MainActivity.employeeDatabase.employeeDAO().addEmployee(employeeData);
+                        Toast.makeText(RegisterEmployee.this, R.string.registration_done, Toast.LENGTH_SHORT).show();
+                        back();
+                    } else {
+                        code.setError("Employee code already present");
+                        Toast.makeText(RegisterEmployee.this, R.string.registration_error, Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         });
+    }
 
+    private boolean validateUsername() {
+        String usernameInput = name.getText().toString().trim();
 
+        if (usernameInput.isEmpty()) {
+            name.setError("Field can't be empty");
+            return false;
+        } else if (!NAME_PATTERN.matcher(usernameInput).matches()) {
+            name.setError("Username not valid");
+            return false;
+        } else {
+            name.setError(null);
+            return true;
+        }
+    }
+
+    private boolean validateEmail() {
+        String emailInput = email.getText().toString().trim();
+
+        if (emailInput.isEmpty()) {
+            email.setError("Field can't be empty");
+            return false;
+        } else if (!Patterns.EMAIL_ADDRESS.matcher(emailInput).matches()) {
+            email.setError("Please enter a valid email address");
+            return false;
+        } else {
+            email.setError(null);
+            return true;
+        }
+    }
+
+    private boolean validatePassword() {
+        String passwordInput = pass.getText().toString().trim();
+
+        if (passwordInput.isEmpty()) {
+            pass.setError("Field can't be empty");
+            return false;
+        } else if (passwordInput.length() < 8) {
+            pass.setError("Password too short");
+            return false;
+        }
+        else if (!PASSWORD_PATTERN.matcher(passwordInput).matches()) {
+            pass.setError("Password too weak");
+            return false;
+        } else {
+            pass.setError(null);
+            return true;
+        }
+    }
+
+    private boolean validateDatOfBirth(){
+        String dobInput = dob.getText().toString().trim();
+        if (dobInput.isEmpty()){
+            dob.setError("Field can't be empty");
+            return false;
+        } else {
+            dob.setError(null);
+            return true;
+        }
+    }
+
+    private boolean validatePhoneNumber(){
+        String phoneInput = phone.getText().toString().trim();
+        if (phoneInput.isEmpty()){
+            phone.setError("Field can't be empty");
+            return false;
+        } else if (!PHONE_PATTERN.matcher(phoneInput).matches()) {
+            phone.setError("Please enter a valid Phone Number");
+            return false;
+        } else {
+            phone.setError(null);
+            return true;
+        }
     }
 
     public void back() {
@@ -108,5 +189,4 @@ public class RegisterEmployee extends AppCompatActivity {
         startActivity(home);
         finish();
     }
-
 }

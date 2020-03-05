@@ -3,6 +3,7 @@ package com.scudderapps.e_tracker.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -16,6 +17,7 @@ import com.scudderapps.e_tracker.R;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -31,6 +33,12 @@ public class UpdateData extends AppCompatActivity {
     List<EmployeeData> searchList;
     private EmployeeData employeeData;
     String emp_code;
+
+    private static final Pattern NAME_PATTERN = Pattern.compile("^[A-Za-z\\s]{1,}[\\.]{0,1}[A-Za-z\\s]{0,}$");
+
+    private static final Pattern PHONE_PATTERN = Pattern.compile("^[7-9][0-9]{9}$");
+
+    private static final Pattern PASSWORD_PATTERN = Pattern.compile("^((?=.*[a-zA-Z]).{8,20})");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,28 +110,24 @@ public class UpdateData extends AppCompatActivity {
                 String emp_password_updated = empPassword.getText().toString();
                 emp_dob_updated = empDob.getText().toString();
 
-                System.out.println(emp_email_updated);
-                System.out.println(emp_name_updated);
-                System.out.println(emp_password_updated);
-                System.out.println(emp_phone_updated);
-                System.out.println(emp_dob_updated);
+                if (validateUsername() && validatePhoneNumber() && validateEmail() && validatePassword() && validateDatOfBirth()) {
+                    employeeData.setCode(emp_code);
+                    employeeData.setName(emp_name_updated);
+                    employeeData.setEmail(emp_email_updated);
+                    employeeData.setPassword(emp_password_updated);
+                    employeeData.setPhone(emp_phone_updated);
+                    employeeData.setDate(emp_dob_updated);
 
-                employeeData.setCode(emp_code);
-                employeeData.setName(emp_name_updated);
-                employeeData.setEmail(emp_email_updated);
-                employeeData.setPassword(emp_password_updated);
-                employeeData.setPhone(emp_phone_updated);
-                employeeData.setDate(emp_dob_updated);
+                    List<EmployeeData> updatedDetails = MainActivity.employeeDatabase.employeeDAO().Employee(emp_code);
 
-                List<EmployeeData> updatedDetails = MainActivity.employeeDatabase.employeeDAO().Employee(emp_code);
-
-                if (updatedDetails.size() != 0) {
-                    MainActivity.employeeDatabase.employeeDAO().update(employeeData);
-                    Toast.makeText(UpdateData.this, "Details updated", Toast.LENGTH_SHORT).show();
-                    back();
-                } else {
-                    searchEmpCode.setError("Employee code already present");
-                    Toast.makeText(UpdateData.this, "No Employee Found", Toast.LENGTH_SHORT).show();
+                    if (updatedDetails.size() != 0) {
+                        MainActivity.employeeDatabase.employeeDAO().update(employeeData);
+                        Toast.makeText(UpdateData.this, "Details updated", Toast.LENGTH_SHORT).show();
+                        back();
+                    } else {
+                        searchEmpCode.setError("Employee code not found");
+                        Toast.makeText(UpdateData.this, "No Employee Found", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         });
@@ -136,6 +140,79 @@ public class UpdateData extends AppCompatActivity {
                 back();
             }
         });
+    }
+
+    private boolean validateUsername() {
+        String usernameInput = empName.getText().toString().trim();
+
+        if (usernameInput.isEmpty()) {
+            empName.setError("Field can't be empty");
+            return false;
+        } else if (!NAME_PATTERN.matcher(usernameInput).matches()) {
+            empName.setError("Username not valid");
+            return false;
+        } else {
+            empName.setError(null);
+            return true;
+        }
+    }
+
+    private boolean validateEmail() {
+        String emailInput = empEmail.getText().toString().trim();
+
+        if (emailInput.isEmpty()) {
+            empEmail.setError("Field can't be empty");
+            return false;
+        } else if (!Patterns.EMAIL_ADDRESS.matcher(emailInput).matches()) {
+            empEmail.setError("Please enter a valid email address");
+            return false;
+        } else {
+            empEmail.setError(null);
+            return true;
+        }
+    }
+
+    private boolean validatePassword() {
+        String passwordInput = empPassword.getText().toString().trim();
+
+        if (passwordInput.isEmpty()) {
+            empPassword.setError("Field can't be empty");
+            return false;
+        } else if (passwordInput.length() < 8) {
+            empPassword.setError("Password too short");
+            return false;
+        } else if (!PASSWORD_PATTERN.matcher(passwordInput).matches()) {
+            empPassword.setError("Password too weak");
+            return false;
+        } else {
+            empPassword.setError(null);
+            return true;
+        }
+    }
+
+    private boolean validateDatOfBirth(){
+        String dobInput = empDob.getText().toString().trim();
+        if (dobInput.isEmpty()){
+            empDob.setError("Field can't be empty");
+            return false;
+        } else {
+            empDob.setError(null);
+            return true;
+        }
+    }
+
+    private boolean validatePhoneNumber(){
+        String phoneInput = empPhone.getText().toString().trim();
+        if (phoneInput.isEmpty()){
+            empPhone.setError("Field can't be empty");
+            return false;
+        } else if (!PHONE_PATTERN.matcher(phoneInput).matches()) {
+            empPhone.setError("Please enter a valid Phone Number");
+            return false;
+        } else {
+            empPhone.setError(null);
+            return true;
+        }
     }
 
     public void back() {

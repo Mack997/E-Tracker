@@ -1,16 +1,18 @@
 package com.scudderapps.e_tracker.Activity;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.scudderapps.e_tracker.AttendanceAdapter;
 import com.scudderapps.e_tracker.DATA.AttendanceDetails;
@@ -25,10 +27,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
@@ -46,6 +45,7 @@ public class AttendanceData extends AppCompatActivity {
     RecyclerView dataView;
     AttendanceAdapter attendanceAdapter;
     AttendanceDatabase attendanceDatabase;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,28 +64,28 @@ public class AttendanceData extends AppCompatActivity {
 
         attendanceBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(final View v) {
 
                 String code = empCode.getText().toString();
                 List<AttendanceDetails> attendanceDetailsList = attendanceDatabase.attendanceDAO().employeeSearched(code);
                 attendanceAdapter = new AttendanceAdapter();
                 dataView.setAdapter(attendanceAdapter);
                 attendanceAdapter.setAttendanceData(attendanceDetailsList);
+                attendanceAdapter.setOnItemClickListener(new AttendanceAdapter.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(final AttendanceDetails attendanceDetails, final int position) {
+                        attendanceDatabase.attendanceDAO().delete(attendanceAdapter.getAttendanceAt(position));
+                        Snackbar snackbar = Snackbar.make(v, "Deleted ", Snackbar.LENGTH_LONG);
+                        View view = snackbar.getView();
+                        TextView textView = view.findViewById(R.id.snackbar_text);
+                        textView.setTextColor(Color.BLACK);
+                        view.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                        snackbar.show();
+
+                    }
+                });
             }
         });
-
-        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
-            @Override
-            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
-                return false;
-            }
-
-            @Override
-            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-                attendanceDatabase.attendanceDAO().delete(attendanceAdapter.getAttendanceAt(viewHolder.getAdapterPosition()));
-                Toast.makeText(AttendanceData.this, "Deleted", Toast.LENGTH_SHORT).show();
-            }
-        }).attachToRecyclerView(dataView);
 
         exportBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,17 +95,6 @@ public class AttendanceData extends AppCompatActivity {
                 back();
             }
         });
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Swipe the list item to delete");
-        builder.setCancelable(false);
-        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                dialog.cancel();
-            }
-        });
-        AlertDialog alertDialog = builder.create();
-        alertDialog.show();
     }
 
     @Override
@@ -130,7 +119,6 @@ public class AttendanceData extends AppCompatActivity {
         }
     }
 
-
     public void back() {
         Intent home = new Intent(AttendanceData.this, MainActivity.class);
         startActivity(home);
@@ -141,7 +129,7 @@ public class AttendanceData extends AppCompatActivity {
         String CODE = empCode.getText().toString();
         String currentTime = new SimpleDateFormat(" d MMM yyyy HH:mm:ss", Locale.getDefault()).format(new Date());
 
-        final String fileName = "AttendanceData-" + currentTime + ".xls"  ;
+        final String fileName = "AttendanceData-" + currentTime + ".xls";
         WorkbookSettings wbSettings = new WorkbookSettings();
         wbSettings.setLocale(new Locale("en", "EN"));
         WritableWorkbook workbook;
@@ -150,7 +138,7 @@ public class AttendanceData extends AppCompatActivity {
 
         File sdCard = Environment.getExternalStorageDirectory();
         File directory = new File(sdCard.getAbsolutePath() + "/ETracker/Attendance Data");
-        if(!directory.isDirectory()){
+        if (!directory.isDirectory()) {
             directory.mkdirs();
         }
         File file = new File(directory, fileName);
@@ -178,8 +166,8 @@ public class AttendanceData extends AppCompatActivity {
                         Date date = null;
                         Date date2 = null;
                         try {
-                            date = new SimpleDateFormat("yyMMddHHmmss").parse(checkIn);
-                            date2 = new SimpleDateFormat("yyMMddHHmmss").parse(checkOut);
+                            date = new SimpleDateFormat(getString(R.string.date_format)).parse(checkIn);
+                            date2 = new SimpleDateFormat(getString(R.string.date_format)).parse(checkOut);
                         } catch (ParseException e) {
                             e.printStackTrace();
                         }
@@ -192,7 +180,7 @@ public class AttendanceData extends AppCompatActivity {
                     } while (cursor.moveToNext());
                 }
                 cursor.close();
-                Toast.makeText(AttendanceData.this, "File Exported to the device", Toast.LENGTH_SHORT).show();
+                Toast.makeText(AttendanceData.this, R.string.export_msg, Toast.LENGTH_SHORT).show();
                 back();
             } catch (WriteException e) {
                 e.printStackTrace();
@@ -209,10 +197,9 @@ public class AttendanceData extends AppCompatActivity {
     }
 
     public void exportAllEmployeeData() {
-        String CODE = empCode.getText().toString();
         String currentTime = new SimpleDateFormat(" d MMM yyyy HH:mm:ss", Locale.getDefault()).format(new Date());
 
-        final String fileName = "EmployeeData-" + currentTime + ".xls"  ;
+        final String fileName = "EmployeeData-" + currentTime + ".xls";
         WorkbookSettings wbSettings = new WorkbookSettings();
         wbSettings.setLocale(new Locale("en", "EN"));
         WritableWorkbook workbook;
@@ -221,7 +208,7 @@ public class AttendanceData extends AppCompatActivity {
 
         File sdCard = Environment.getExternalStorageDirectory();
         File directory = new File(sdCard.getAbsolutePath() + "/ETracker/Employee Data");
-        if(!directory.isDirectory()){
+        if (!directory.isDirectory()) {
             directory.mkdirs();
         }
         File file = new File(directory, fileName);
@@ -253,7 +240,7 @@ public class AttendanceData extends AppCompatActivity {
                     } while (cursor.moveToNext());
                 }
                 cursor.close();
-                Toast.makeText(AttendanceData.this, "File Exported to the device", Toast.LENGTH_SHORT).show();
+                Toast.makeText(AttendanceData.this, R.string.export_msg, Toast.LENGTH_SHORT).show();
                 back();
             } catch (WriteException e) {
                 e.printStackTrace();

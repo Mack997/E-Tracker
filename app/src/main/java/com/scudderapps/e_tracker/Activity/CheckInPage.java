@@ -26,30 +26,30 @@ import androidx.room.Room;
 
 public class CheckInPage extends AppCompatActivity {
 
-    String ECode, EPass;
-    EditText eCode, ePass;
-    Button CheckIn, CheckOut, searchEmployee;
-    TextView nameView, codeView, dobView;
+    String empCode, empPass;
+    EditText editCode, editPass;
+    Button CheckInBtn, CheckOutBtn, searchEmployeeBtn;
+    TextView nameView, codeView, emailView;
 
     AttendanceDetails attendanceDetails;
     AttendanceDatabase attendanceDatabase;
-    String code;
+    String fetchedEmpCode;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.attendance_activity);
-        CheckIn = findViewById(R.id.checkIn);
-        CheckOut = findViewById(R.id.checkOut);
-        searchEmployee = findViewById(R.id.search);
-        eCode = findViewById(R.id.ECode);
-        ePass = findViewById(R.id.EPassword);
+        CheckInBtn = findViewById(R.id.checkIn);
+        CheckOutBtn = findViewById(R.id.checkOut);
+        searchEmployeeBtn = findViewById(R.id.search);
+        editCode = findViewById(R.id.ECode);
+        editPass = findViewById(R.id.EPassword);
         nameView = findViewById(R.id.searchedName);
         codeView = findViewById(R.id.searchedCode);
-        dobView = findViewById(R.id.searchedDob);
+        emailView = findViewById(R.id.searchedEmail);
 
-        CheckOut.setEnabled(false);
-        CheckIn.setEnabled(false);
+        CheckOutBtn.setEnabled(false);
+        CheckInBtn.setEnabled(false);
 
         attendanceDetails = new AttendanceDetails();
         attendanceDatabase = Room.databaseBuilder(getApplicationContext(),
@@ -59,75 +59,74 @@ public class CheckInPage extends AppCompatActivity {
 
         final String check_in = new SimpleDateFormat("yyMMddHHmmss", Locale.getDefault()).format(new Date());
 
-        searchEmployee.setOnClickListener(new View.OnClickListener() {
+        searchEmployeeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ECode = eCode.getText().toString();
-                EPass = ePass.getText().toString();
+                empCode = editCode.getText().toString();
+                empPass = editPass.getText().toString();
 
-                List<EmployeeData> allEmployeeList = MainActivity.employeeDatabase.employeeDAO().allEmployee();
+                if (validateFields() && validatePass()) {
 
-                for (EmployeeData allData : allEmployeeList) {
-                    final String allCode = allData.getCode();
-                    String allPass = allData.getPassword();
+                    List<EmployeeData> allEmployeeList = MainActivity.employeeDatabase.employeeDAO().allEmployee();
+                    for (EmployeeData allEmployeeData : allEmployeeList) {
+                        final String allEmpCode = allEmployeeData.getCode();
+                        String allEmpPass = allEmployeeData.getPassword();
 
-                    if (ECode.equals(allCode) && EPass.equals(allPass)) {
+                        if (empCode.equals(allEmpCode) && empPass.equals(allEmpPass)) {
 
-                        List<EmployeeData> employeeDataList = MainActivity.employeeDatabase.employeeDAO().getEmployee(ECode, EPass);
+                            List<EmployeeData> fetchedEmployeeDataList = MainActivity.employeeDatabase.employeeDAO().getEmployee(empCode, empPass);
 
-                        for (EmployeeData data : employeeDataList) {
+                            for (EmployeeData data : fetchedEmployeeDataList) {
 
-                            String name = data.getName();
-                            code = data.getCode();
-                            String dob = data.getDate();
+                                String fetchedEmpName = data.getName();
+                                fetchedEmpCode = data.getCode();
+                                String fetchedEmpEmail = data.getEmail();
 
-                            nameView.setText(name);
-                            codeView.setText(code);
-                            dobView.setText(dob);
+                                nameView.setText(fetchedEmpName);
+                                codeView.setText(empCode);
+                                emailView.setText(fetchedEmpEmail);
 
-                            List<AttendanceDetails> statusDetails = attendanceDatabase.attendanceDAO().employeeNew(ECode);
+                                List<AttendanceDetails> statusDetails = attendanceDatabase.attendanceDAO().employeeNew(empCode);
 
-                            List<AttendanceDetails> empCode = attendanceDatabase.attendanceDAO().employeeSearched(ECode);
+                                List<AttendanceDetails> empCode = attendanceDatabase.attendanceDAO().employeeSearched(CheckInPage.this.empCode);
 
-                            String l = String.valueOf(empCode.size());
-                            Log.v("length", l);
-
-                            if (empCode.size() == 0) {
-                                CheckIn.setEnabled(true);
-                                CheckOut.setEnabled(false);
-                                CheckIn.setBackgroundColor(Color.GREEN);
-                                CheckOut.setBackgroundColor(Color.GRAY);
-                            } else {
-                                for (AttendanceDetails statusString : statusDetails) {
-                                    String status = statusString.getStatus();
-                                    String size = String.valueOf(statusDetails.size());
-                                    Log.v("max", size);
-                                    if (status.equals("Checked In")) {
-                                        CheckIn.setEnabled(false);
-                                        CheckOut.setEnabled(true);
-                                        CheckOut.setBackgroundColor(Color.GREEN);
-                                        CheckIn.setBackgroundColor(Color.GRAY);
-                                    } else {
-                                        CheckIn.setEnabled(true);
-                                        CheckOut.setEnabled(false);
-                                        CheckIn.setBackgroundColor(Color.GREEN);
-                                        CheckOut.setBackgroundColor(Color.GRAY);
+                                if (empCode.size() == 0) {
+                                    CheckInBtn.setEnabled(true);
+                                    CheckOutBtn.setEnabled(false);
+                                    CheckInBtn.setBackgroundColor(Color.GREEN);
+                                    CheckOutBtn.setBackgroundColor(Color.GRAY);
+                                } else {
+                                    for (AttendanceDetails statusString : statusDetails) {
+                                        String status = statusString.getStatus();
+                                        String size = String.valueOf(statusDetails.size());
+                                        Log.v("max", size);
+                                        if (status.equals("Checked In")) {
+                                            CheckInBtn.setEnabled(false);
+                                            CheckOutBtn.setEnabled(true);
+                                            CheckOutBtn.setBackgroundColor(Color.RED);
+                                            CheckInBtn.setBackgroundColor(Color.GRAY);
+                                        } else {
+                                            CheckInBtn.setEnabled(true);
+                                            CheckOutBtn.setEnabled(false);
+                                            CheckInBtn.setBackgroundColor(Color.GREEN);
+                                            CheckOutBtn.setBackgroundColor(Color.GRAY);
+                                        }
                                     }
                                 }
                             }
+                        } else {
+                            Toast.makeText(CheckInPage.this, "Please enter the correct details", Toast.LENGTH_SHORT).show();
                         }
-                    } else {
-                        Toast.makeText(CheckInPage.this, "Please enter the correct details", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
         });
 
-        CheckIn.setOnClickListener(new View.OnClickListener() {
+        CheckInBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String status = "Checked In";
-                attendanceDetails.setCode(ECode);
+                attendanceDetails.setCode(empCode);
                 attendanceDetails.setCreatedAt(check_in);
                 attendanceDetails.setStatus(status);
 
@@ -137,11 +136,11 @@ public class CheckInPage extends AppCompatActivity {
             }
         });
 
-        CheckOut.setOnClickListener(new View.OnClickListener() {
+        CheckOutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String status = "Checked Out";
-                attendanceDetails.setCode(ECode);
+                attendanceDetails.setCode(empCode);
                 attendanceDetails.setCreatedAt(check_in);
                 attendanceDetails.setStatus(status);
 
@@ -150,6 +149,29 @@ public class CheckInPage extends AppCompatActivity {
                 back();
             }
         });
+    }
+
+    private boolean validateFields() {
+        String Code = editCode.getText().toString().trim();
+
+        if (Code.isEmpty()) {
+            editCode.setError(getString(R.string.empty_field_error));
+            return false;
+        } else {
+            editCode.setError(null);
+            return true;
+        }
+    }
+
+    private boolean validatePass() {
+        String Pass = editPass.getText().toString().trim();
+        if (Pass.isEmpty()) {
+            editPass.setError(getString(R.string.pass_error));
+            return false;
+        } else {
+            editPass.setError(null);
+            return true;
+        }
     }
 
     public void back() {

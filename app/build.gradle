@@ -31,4 +31,5 @@ dependencies {
     implementation 'android.arch.lifecycle:extensions:1.1.1'
     implementation 'com.google.android.material:material:1.0.0'
     compile files('libs/jxl.jar')
+    compile 'com.basgeekball:awesome-validation:1.3'
 }
