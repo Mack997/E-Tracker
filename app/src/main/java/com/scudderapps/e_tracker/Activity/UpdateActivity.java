@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.scudderapps.e_tracker.DATA.EmployeeData;
+import com.scudderapps.e_tracker.Database.EmployeeDatabase;
 import com.scudderapps.e_tracker.R;
 
 import java.text.SimpleDateFormat;
@@ -65,6 +66,8 @@ public class UpdateActivity extends AppCompatActivity {
         updateBtn.setEnabled(false);
         deleteBtn.setEnabled(false);
 
+        final EmployeeDatabase employeeDatabase = EmployeeDatabase.getInstance(getApplicationContext());
+
         if (getSupportActionBar() != null) {
             ActionBar actionBar = getSupportActionBar();
             actionBar.setDisplayHomeAsUpEnabled(false);
@@ -99,7 +102,7 @@ public class UpdateActivity extends AppCompatActivity {
                 emp_code = searchEmpCode.getText().toString();
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(searchEmpBtn.getWindowToken(), InputMethodManager.RESULT_UNCHANGED_SHOWN);
-                searchList = MainActivity.employeeDatabase.employeeDAO().getSelectedEmployee(emp_code);
+                searchList = employeeDatabase.employeeDAO().getSelectedEmployee(emp_code);
 
                 if (!searchList.isEmpty()) {
                     for (EmployeeData employeeData : searchList) {
@@ -166,10 +169,10 @@ public class UpdateActivity extends AppCompatActivity {
                     employeeData.setPhone(emp_phone_updated);
                     employeeData.setDate(emp_dob_updated);
 
-                    List<EmployeeData> updatedDetails = MainActivity.employeeDatabase.employeeDAO().getSelectedEmployee(emp_code);
+                    List<EmployeeData> updatedDetails = employeeDatabase.employeeDAO().getSelectedEmployee(emp_code);
 
                     if (updatedDetails.size() != 0) {
-                        MainActivity.employeeDatabase.employeeDAO().update(employeeData);
+                        employeeDatabase.employeeDAO().update(employeeData);
                         Toast.makeText(UpdateActivity.this, "Details updated", Toast.LENGTH_SHORT).show();
                         back();
                     } else {
@@ -184,7 +187,7 @@ public class UpdateActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (validatePassword()) {
-                    MainActivity.employeeDatabase.employeeDAO().delete(emp_code);
+                    employeeDatabase.employeeDAO().delete(emp_code);
                     Toast.makeText(UpdateActivity.this, "Employee Deleted", Toast.LENGTH_SHORT).show();
                     back();
                 } else {

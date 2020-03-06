@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.scudderapps.e_tracker.DATA.AttendanceDetails;
 import com.scudderapps.e_tracker.DATA.EmployeeData;
 import com.scudderapps.e_tracker.Database.AttendanceDatabase;
+import com.scudderapps.e_tracker.Database.EmployeeDatabase;
 import com.scudderapps.e_tracker.R;
 
 import java.text.SimpleDateFormat;
@@ -34,7 +35,6 @@ public class AttendanceActivity extends AppCompatActivity {
     Button CheckInBtn, CheckOutBtn, searchEmployee;
     TextView nameView, codeView, emailView;
     AttendanceDetails attendanceDetails;
-    AttendanceDatabase attendanceDatabase;
     String code;
     LinearLayout dataView;
 
@@ -53,6 +53,9 @@ public class AttendanceActivity extends AppCompatActivity {
         dataView = findViewById(R.id.dataView);
         dataView.setVisibility(View.INVISIBLE);
 
+        final EmployeeDatabase employeeDatabase = EmployeeDatabase.getInstance(getApplicationContext());
+        final AttendanceDatabase attendanceDatabase = AttendanceDatabase.getInstance(getApplicationContext());
+
         CheckOutBtn.setEnabled(false);
         CheckInBtn.setEnabled(false);
 
@@ -60,12 +63,6 @@ public class AttendanceActivity extends AppCompatActivity {
             ActionBar actionBar = getSupportActionBar();
             actionBar.setDisplayHomeAsUpEnabled(false);
         }
-
-        attendanceDetails = new AttendanceDetails();
-        attendanceDatabase = Room.databaseBuilder(getApplicationContext(),
-                AttendanceDatabase.class, "AttendanceData")
-                .allowMainThreadQueries()
-                .build();
 
         String currentDate = new SimpleDateFormat("yyMMddHHmmss", Locale.getDefault()).format(new Date());
         final String check_in = currentDate;
@@ -80,13 +77,13 @@ public class AttendanceActivity extends AppCompatActivity {
                 imm.hideSoftInputFromWindow(searchEmployee.getWindowToken(), InputMethodManager.RESULT_UNCHANGED_SHOWN);
 
                 if (validateFields(ECode) && validatePass(EPass)) {
-                    List<EmployeeData> allEmployeeList = MainActivity.employeeDatabase.employeeDAO().allEmployee();
+                    List<EmployeeData> allEmployeeList = employeeDatabase.employeeDAO().allEmployee();
                     for (EmployeeData allData : allEmployeeList) {
                         final String allCode = allData.getCode();
                         String allPass = allData.getPassword();
 
                         if (ECode.equals(allCode) && EPass.equals(allPass)) {
-                            Cursor employeeDataList = MainActivity.employeeDatabase.employeeDAO().getSearchEmployeeCursor(ECode, EPass);
+                            Cursor employeeDataList = employeeDatabase.employeeDAO().getSearchEmployeeCursor(ECode, EPass);
                             if (employeeDataList.moveToFirst()) {
                                 do {
                                     dataView.setVisibility(View.VISIBLE);
