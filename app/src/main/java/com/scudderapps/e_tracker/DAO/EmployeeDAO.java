@@ -35,5 +35,7 @@ public interface EmployeeDAO {
     @Query("SELECT * FROM employee_data Where code = :code")
     List<EmployeeData> getSelectedEmployee(String code);
 
+    @Query("SELECT * FROM employee_data where code = :code and password = :pass")
+    Cursor getSearchEmployeeCursor(String code, String pass);
 
 }

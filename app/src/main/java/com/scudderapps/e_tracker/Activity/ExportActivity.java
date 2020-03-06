@@ -57,7 +57,7 @@ public class ExportActivity extends AppCompatActivity {
         setContentView(R.layout.attendance_data);
         attendanceBtn = findViewById(R.id.attendanceBtn);
         deleteAllDataBtn = findViewById(R.id.deleteAllData);
-        dataView = findViewById(R.id.dataView);
+        dataView = findViewById(R.id.attendanceData);
         empCode = findViewById(R.id.getDateCode);
         dataView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         dataView.setHasFixedSize(true);
@@ -81,7 +81,7 @@ public class ExportActivity extends AppCompatActivity {
             public void onClick(final View v) {
 
                 String code = empCode.getText().toString();
-                InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(attendanceBtn.getWindowToken(), InputMethodManager.RESULT_UNCHANGED_SHOWN);
                 if (validateFields()) {
                     linearLayout.setVisibility(View.VISIBLE);
@@ -173,6 +173,7 @@ public class ExportActivity extends AppCompatActivity {
         startActivity(home);
         finish();
     }
+
     public void exportAllEmployeeData() {
         String currentTime = new SimpleDateFormat(" d MMM yyyy HH:mm:ss", Locale.getDefault()).format(new Date());
 
