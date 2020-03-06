@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.scudderapps.e_tracker.DATA.EmployeeData;
+import com.scudderapps.e_tracker.Database.EmployeeDatabase;
 import com.scudderapps.e_tracker.R;
 
 import java.text.SimpleDateFormat;
@@ -42,6 +43,7 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.register_employee);
         employeeData = new EmployeeData();
+        final EmployeeDatabase employeeDatabase = EmployeeDatabase.getInstance(getApplicationContext());
 
         name = findViewById(R.id.name);
         dob = findViewById(R.id.dob);
@@ -99,10 +101,10 @@ public class RegisterActivity extends AppCompatActivity {
                     employeeData.setPassword(ePass);
                     employeeData.setDate(eDob);
 
-                    List<EmployeeData> allEmployeeList = MainActivity.employeeDatabase.employeeDAO().getSelectedEmployee(eCode);
+                    List<EmployeeData> allEmployeeList = employeeDatabase.employeeDAO().getSelectedEmployee(eCode);
 
                     if (allEmployeeList.size() == 0) {
-                        MainActivity.employeeDatabase.employeeDAO().addEmployee(employeeData);
+                        employeeDatabase.employeeDAO().addEmployee(employeeData);
                         Toast.makeText(RegisterActivity.this, R.string.registration_done, Toast.LENGTH_SHORT).show();
                         back();
                     } else {

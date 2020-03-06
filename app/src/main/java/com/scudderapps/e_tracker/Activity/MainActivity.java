@@ -20,7 +20,6 @@ import androidx.room.Room;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static EmployeeDatabase employeeDatabase;
     Button register, attendance, edit, export;
 
     public static final int REQUEST_ID_MULTIPLE_PERMISSIONS = 1;
@@ -31,11 +30,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         checkAndRequestPermissions();
-
-        employeeDatabase = Room.databaseBuilder(getApplicationContext(),
-                EmployeeDatabase.class, "EmployeeData")
-                .allowMainThreadQueries()
-                .build();
 
         register = findViewById(R.id.register);
         attendance = findViewById(R.id.attendance);
