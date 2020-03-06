@@ -53,11 +53,10 @@
 
 
     <LinearLayout
-        android:id="@+id/attendanceData"
+        android:id="@+id/dataView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:visibility="gone"
         android:background="@drawable/list_bg"
         android:orientation="vertical">
 
@@ -91,24 +90,24 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/searchedName" />
 
-        <Button
-            android:id="@+id/checkIn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:background="@android:color/darker_gray"
-            android:text="@string/check_in" />
-
-
-        <Button
-            android:id="@+id/checkOut"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:background="@android:color/darker_gray"
-            android:text="@string/check_out" />
-
     </LinearLayout>
+
+    <Button
+        android:id="@+id/checkIn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="@android:color/darker_gray"
+        android:text="@string/check_in" />
+
+
+    <Button
+        android:id="@+id/checkOut"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@android:color/darker_gray"
+        android:text="@string/check_out" />
 
 
 </LinearLayout>

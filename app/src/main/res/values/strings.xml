@@ -33,8 +33,4 @@
     <string name="export_all_attendance_record">Export Attendance Record</string>
     <string name="export_msg">File Exported to the device</string>
     <string name="date_format">yyMMddHHmmss</string>
-    <string name="no_record_found">No Record Found</string>
-    <string name="wrond_password">Wrong Password</string>
-    <string name="checked_in">Checked In</string>
-    <string name="checked_out">Checked Out</string>
 </resources>

@@ -2,7 +2,6 @@ package com.scudderapps.e_tracker.Activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -50,8 +49,6 @@ public class AttendanceActivity extends AppCompatActivity {
         nameView = findViewById(R.id.searchedName);
         codeView = findViewById(R.id.searchedCode);
         emailView = findViewById(R.id.searchedEmail);
-        dataView = findViewById(R.id.attendanceData);
-        dataView.setVisibility(View.INVISIBLE);
 
         CheckOutBtn.setEnabled(false);
         CheckInBtn.setEnabled(false);
@@ -86,49 +83,39 @@ public class AttendanceActivity extends AppCompatActivity {
                         String allPass = allData.getPassword();
 
                         if (ECode.equals(allCode) && EPass.equals(allPass)) {
-                            Cursor employeeDataList = MainActivity.employeeDatabase.employeeDAO().getSearchEmployeeCursor(ECode, EPass);
-                            if (employeeDataList.moveToFirst()) {
-                                do {
-                                    dataView.setVisibility(View.VISIBLE);
-                                    code = employeeDataList.getString(employeeDataList.getColumnIndex("code"));
-                                    String name = employeeDataList.getString(employeeDataList.getColumnIndex("name"));
-                                    String email = employeeDataList.getString(employeeDataList.getColumnIndex("email"));
-                                    nameView.setText("Name : " + name);
-                                    codeView.setText("Code : " + code);
-                                    emailView.setText("Email : " + email);
+                            List<EmployeeData> employeeDataList = MainActivity.employeeDatabase.employeeDAO().searchEmployee(ECode, EPass);
+                            for (EmployeeData data : employeeDataList) {
+                                String name = data.getName();
+                                code = data.getCode();
+                                String email = data.getEmail();
+                                nameView.setText("Name : " + name);
+                                codeView.setText("Code : " + code);
+                                emailView.setText("Email : " + email);
 
-                                    List<AttendanceDetails> statusDetails = attendanceDatabase.attendanceDAO().latestEntry(ECode);
-                                    List<AttendanceDetails> empCode = attendanceDatabase.attendanceDAO().dataSelected(ECode);
-                                    if (empCode.size() == 0) {
-                                        CheckInBtn.setEnabled(true);
-                                        CheckOutBtn.setEnabled(false);
-                                        CheckInBtn.setBackground(getResources().getDrawable(R.drawable.btn_bg));
-                                        CheckOutBtn.setBackground(getResources().getDrawable(R.drawable.list_bg));
-                                    } else {
-                                        for (AttendanceDetails statusString : statusDetails) {
-                                            String status = statusString.getStatus();
-                                            if (status.equals(R.string.checked_in)) {
-                                                CheckInBtn.setEnabled(false);
-                                                CheckOutBtn.setEnabled(true);
-                                                CheckOutBtn.setBackground(getResources().getDrawable(R.drawable.btn_bg));
-                                                CheckInBtn.setBackground(getResources().getDrawable(R.drawable.list_bg));
-                                            } else {
-                                                CheckInBtn.setEnabled(true);
-                                                CheckOutBtn.setEnabled(false);
-                                                CheckInBtn.setBackground(getResources().getDrawable(R.drawable.btn_bg));
-                                                CheckOutBtn.setBackground(getResources().getDrawable(R.drawable.list_bg));
-                                            }
+                                List<AttendanceDetails> statusDetails = attendanceDatabase.attendanceDAO().latestEntry(ECode);
+                                List<AttendanceDetails> empCode = attendanceDatabase.attendanceDAO().dataSelected(ECode);
+                                if (empCode.size() == 0) {
+                                    CheckInBtn.setEnabled(true);
+                                    CheckOutBtn.setEnabled(false);
+                                    CheckInBtn.setBackground(getResources().getDrawable(R.drawable.btn_bg));
+                                    CheckOutBtn.setBackground(getResources().getDrawable(R.drawable.list_bg));
+                                } else {
+                                    for (AttendanceDetails statusString : statusDetails) {
+                                        String status = statusString.getStatus();
+                                        if (status.equals("Checked In")) {
+                                            CheckInBtn.setEnabled(false);
+                                            CheckOutBtn.setEnabled(true);
+                                            CheckOutBtn.setBackground(getResources().getDrawable(R.drawable.btn_bg));
+                                            CheckInBtn.setBackground(getResources().getDrawable(R.drawable.list_bg));
+                                        } else {
+                                            CheckInBtn.setEnabled(true);
+                                            CheckOutBtn.setEnabled(false);
+                                            CheckInBtn.setBackground(getResources().getDrawable(R.drawable.btn_bg));
+                                            CheckOutBtn.setBackground(getResources().getDrawable(R.drawable.list_bg));
                                         }
                                     }
-                                } while (employeeDataList.moveToNext());
+                                }
                             }
-                            employeeDataList.close();
-                        } else if (ECode.equals(allCode) && !EPass.equals(allPass)){
-                            dataView.setVisibility(View.INVISIBLE);
-                            Toast.makeText(AttendanceActivity.this, R.string.wrond_password, Toast.LENGTH_SHORT).show();
-                        } else {
-                            dataView.setVisibility(View.INVISIBLE);
-                            Toast.makeText(AttendanceActivity.this, R.string.no_record_found, Toast.LENGTH_SHORT).show();
                         }
                     }
                 }
@@ -138,12 +125,12 @@ public class AttendanceActivity extends AppCompatActivity {
         CheckInBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String status = getString(R.string.checked_in);
+                String status = "Checked In";
                 attendanceDetails.setCode(code);
                 attendanceDetails.setCreatedAt(check_in);
                 attendanceDetails.setStatus(status);
                 attendanceDatabase.attendanceDAO().addAttendance(attendanceDetails);
-                Toast.makeText(AttendanceActivity.this, R.string.checked_in, Toast.LENGTH_SHORT).show();
+                Toast.makeText(AttendanceActivity.this, "Checked In", Toast.LENGTH_SHORT).show();
                 back();
             }
         });
@@ -151,12 +138,12 @@ public class AttendanceActivity extends AppCompatActivity {
         CheckOutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String status = getString(R.string.checked_out);
+                String status = "Checked Out";
                 attendanceDetails.setCode(code);
                 attendanceDetails.setCreatedAt(check_in);
                 attendanceDetails.setStatus(status);
                 attendanceDatabase.attendanceDAO().addAttendance(attendanceDetails);
-                Toast.makeText(AttendanceActivity.this, R.string.checked_out , Toast.LENGTH_SHORT).show();
+                Toast.makeText(AttendanceActivity.this, "Checked Out", Toast.LENGTH_SHORT).show();
                 back();
             }
         });
